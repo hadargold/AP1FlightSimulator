@@ -6,8 +6,13 @@
 #define FLIGHTSIMULATOR_IFCOMMAND_H
 
 
-class IfCommand {
+#include "Condition.h"
+#include "CommandsManager.h"
 
+class IfCommand : Condition {
+    vector<string>::iterator &it;
+public:
+    void doCommand(vector<string> &text);
 };
 
 
