@@ -17,6 +17,8 @@
 #include <complex>
 #include "SymbolTable.h"
 
+void updateValuesInSymbolTable(string stringOfValuesFromSim);
+vector <string> splitByComma(string stringOfValuesFromSim);
 
 OpenServerCommand :: OpenServerCommand(std::string strPort) {
     // change the port to int
@@ -27,9 +29,6 @@ OpenServerCommand :: OpenServerCommand(std::string strPort) {
     int intPort = (int) expressionToPrint->calculate();
     this->port = intPort;
 }
-
-void updateValuesInSymbolTable(string stringOfValuesFromSim);
-vector <string> splitByComma(string stringOfValuesFromSim);
 
 void OpenServerCommand:: execute(int* index) {
     pthread_t thread;

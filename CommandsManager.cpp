@@ -8,19 +8,16 @@
 #include "OpenServerCommand.h"
 #include "ex1.h"
 #include "VarCommand.h"
-
+#include "OpenServerCommand.h"
 
 using namespace std;
 
 // return true if there is a command represented by the string
 bool CommandsManager::isCommand(const string &stringRepresentACommand) {
     // was map<string, command*  > !!!!!!!!
-    map<string, int > :: iterator it = commandToNumOfParameters.find(stringRepresentACommand);
+    auto it = commandToNumOfParameters.find(stringRepresentACommand);
     // if find didnt return pointer to the end of the map so the key is exists
-    if (it != commandToNumOfParameters.end()) {
-        return true;
-    }
-    return false;
+    return it != commandToNumOfParameters.end();
 }
 
 // returns the command of the string

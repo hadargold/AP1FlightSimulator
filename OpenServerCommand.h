@@ -2,6 +2,7 @@
 #define EX3_OPENSERVERCOMMAND_H
 
 #include <string>
+#include "Command.h"
 
 using namespace std;
 
@@ -9,10 +10,8 @@ class OpenServerCommand: public Command{
 private:
     string strPort;
 public:
-    void ConnectCommand(string ip, string port) {
-        this->strPort = port;
-    }
-    void execute(int& index);
+    OpenServerCommand(string strPort);
+    void execute(int* index);
     void* openDataServer(void* parameters);
 };
 
