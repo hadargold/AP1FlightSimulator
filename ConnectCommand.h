@@ -11,10 +11,10 @@
 
 class ConnectCommand: public Command{
 private:
-     std::string ip;
+     char *ip;
      int port;
 public:
-    ConnectCommand(std::string  ip, std::string  port);
+    ConnectCommand(const char *ip, std::string  port);
     void execute(int* index) override;
     static void* createConnect(void* parameters);
 };

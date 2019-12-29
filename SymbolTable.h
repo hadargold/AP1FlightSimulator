@@ -218,16 +218,16 @@ class SymbolTable {
         map["engine_rpm"] = engine_rpm;
     }
 
-    unordered_map<string, Variable *> getMap() {
-        return this->map;
-    }
-
     void addValuesFromSimToSymbolTable(vector<double> splitValues, string simArr[]) {
         for (int i = 0; i < splitValues.size(); i++) {
             this->map[simArr[i]] = new Variable(simArr[i], splitValues[i], 0);
         }
     }
 
+public:
+    unordered_map<string, Variable*> getMap() {
+        return this->map;
+    }
 };
 
 #endif //FLIGHTSIMULATOR_SYMBOLTABLE_H

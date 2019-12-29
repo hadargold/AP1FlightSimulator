@@ -8,11 +8,11 @@ using namespace std;
 
 class OpenServerCommand: public Command{
 private:
-    string strPort;
+    int port;
 public:
     OpenServerCommand(string strPort);
     void execute(int* index);
-    void* openDataServer(void* parameters);
+    static void* openDataServer(void* parameters);
 };
 
 #endif //EX3_OPENSERVERCOMMAND_H

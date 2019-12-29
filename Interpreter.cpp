@@ -19,7 +19,7 @@ string findNum(string str);
 void fromStackToQueue (queue<string>** output, stack<string>** operatorStack);
 bool varIsValid(string token);
 bool numIsValid(string token);
-void setVariablesByMapOfVars(map<string,Variable> nameOfVarToVariableMap);
+void setVariablesByMapOfVars(unordered_map<string,Variable*> nameOfVarToVariableMap);
 
 
 
@@ -175,11 +175,11 @@ void Interpreter::setVariables(string var) {
     }
 }
 
-void Interpreter::setVariablesByMapOfVars(map<string,Variable> nameOfVarToVariableMap) {
-    map<string, Variable>::iterator it;
+void Interpreter::setVariablesByMapOfVars(unordered_map<string,Variable*> nameOfVarToVariableMap) {
+    unordered_map<string, Variable*>::iterator it;
     for (it = nameOfVarToVariableMap.begin(); it != nameOfVarToVariableMap.end(); it++)
     {
-        (this->variables)[it->first] = it->second.getValue();
+        (this->variables)[it->first] = it->second->getValue();
     }
 }
 

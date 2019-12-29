@@ -2,7 +2,7 @@
 #define EX3_VARIABLEMANAGER_H
 
 #include <vector>
-#include "Ex1.h"
+#include "ex1.h"
 
 class VariableManager {
 private:
@@ -10,5 +10,5 @@ private:
 public:
     void addToVarList(string name, double value);
     vector <Variable> getVarList();
-}
+};
 #endif //EX3_VARIABLEMANAGER_H

@@ -4,8 +4,6 @@
 
 #include "OpenServerCommand.h"
 #include <thread>
-#include <bits/socket.h>
-#include <bits/socket_type.h>
 #include <sys/socket.h>
 #include <iostream>
 #include <netinet/in.h>
@@ -23,22 +21,24 @@ vector <string> splitByComma(string stringOfValuesFromSim);
 OpenServerCommand :: OpenServerCommand(std::string strPort) {
     // change the port to int
     auto *stringToInterpretForPort= new Interpreter();
-    auto *variableManager = new VariableManager();
-    stringToInterpretForPort->setVariablesByMapOfVars(variableManager->getVarList());
+    SymbolTable *symbolTable = new SymbolTable();;
+    stringToInterpretForPort->setVariablesByMapOfVars(symbolTable->getMap());
     Expression *expressionToPrint = stringToInterpretForPort->interpret(strPort);
     int intPort = (int) expressionToPrint->calculate();
     this->port = intPort;
 }
 
+struct parameters {
+    int portToconnect;
+};
+
 void OpenServerCommand:: execute(int* index) {
-    pthread_t thread;
     // parameters contains the parameters to the createConnectString
-    struct parameters {
-        int portToconnect;
-    };
-    parameters *parametersToOpenDataServer = new parameters();
+    struct parameters *parametersToOpenDataServer;
+    parametersToOpenDataServer = new parameters();
     parametersToOpenDataServer->portToconnect = this->port;
-    pthread_create(&thread, nullptr, openDataServer, parametersToOpenDataServer);
+    pthread_t thread;
+    pthread_create(&thread, nullptr, OpenServerCommand::openDataServer, parametersToOpenDataServer);
     *index += 1;
 }
 
@@ -57,7 +57,7 @@ void* OpenServerCommand::openDataServer(void* arguments) {
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
-    address.sin_port = htons(parametersToOpenDataServer.portToconnect);
+    address.sin_port = htons(parametersToOpenDataServer->portToconnect);
     //we need to convert our number
     // to a number that the network understands.
 
@@ -82,6 +82,8 @@ void* OpenServerCommand::openDataServer(void* arguments) {
     if (client_socket == -1) {
         std::cerr << "Error accepting client" << std::endl;
         exit(1);
+    } else {
+        cout << "server connected" << endl;
     }
 
     close(socketfd); //closing the listening socket

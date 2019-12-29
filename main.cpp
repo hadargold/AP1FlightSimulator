@@ -72,9 +72,9 @@ int main(){
                     "var breaks -> sim(\"/controls/flight/speedbrake\")\n"
                     "var heading <- sim(\"/instrumentation/heading-indicator/offset-deg\")";
 
-    Lexer * l= new Lexer();
-    vector <string> vec = l->lexer("fly.txt");
-        for (auto i = vec.begin(); i != vec.end(); ++i)
+    Lexer *l= new Lexer();
+    vector <string> lexerVec = l->lexer("fly.txt");
+        for (auto i = lexerVec.begin(); i != lexerVec.end(); ++i)
             std::cout << *i + ','<< ' ';
 
 //    string result = "opEn(22)";
@@ -84,9 +84,9 @@ int main(){
 //        std::cout << *i + ','<< ' ';
 
 //yuval:
-    CommandsManager commandsManager = new CommandsManager();
+    CommandsManager *commandsManager = new CommandsManager();
     Parser *parser = new Parser();
-    parser->parse(,l)
+    parser->parse(commandsManager,lexerVec);
 
 
 

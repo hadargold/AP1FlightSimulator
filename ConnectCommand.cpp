@@ -2,7 +2,6 @@
 // Created by hadar on 12/19/19.
 //
 
-#include <bits/socket.h>
 #include <sys/socket.h>
 #include <iostream>
 #include <map>
@@ -17,37 +16,44 @@
 #include <arpa/inet.h>
 #include "UpdateValCommand.h"
 #include "SymbolTable.h"
+using namespace std;
 
 string getNameOfVarBySimulator(string nameAccordingToClientAndValue);
 
-ConnectCommand :: ConnectCommand(std::string  ip, std::string  port) {
-    this->ip = ip;
+ConnectCommand :: ConnectCommand(const char *ip, string  port) {
+    this->ip = (char*) ip;
     // change the port to int
     auto *stringToInterpretForPort= new Interpreter();
-    auto *variableManager = new VariableManager();
-    stringToInterpretForPort->setVariablesByMapOfVars(variableManager->getVarList());
-    Expression *expressionToPrint = stringToInterpretForPort->interpret(port);
-    int intPort = (int) expressionToPrint->calculate();
+    SymbolTable *symbolTable = new SymbolTable();
+    unordered_map<string,Variable*> nameOfVarToVariableMap = symbolTable->getMap();
+    stringToInterpretForPort->setVariablesByMapOfVars(nameOfVarToVariableMap);
+    Expression *expressionToPort = stringToInterpretForPort->interpret(port);
+    int intPort = (int) expressionToPort->calculate();
     this->port = intPort;
 }
 
+struct parameters {
+    int portToconnect = 0;
+    const char* IpToconnect = "";
+};
+
+// main
 void ConnectCommand:: execute(int* index) {
-    pthread_t thread;
     // parameters contains the parameters to the createConnectString
-    struct parameters {
-        int portToconnect;
-        string IpToconnect;
-    };
-    parameters *parametersToOpenDataServer = new parameters();
-    parametersToOpenDataServer->portToconnect = this->port;
-    parametersToOpenDataServer->IpToconnect = this->ip;
-    pthread_create(&thread, nullptr, ConnectCommand::createConnect , parametersToOpenDataServer);
+    struct parameters *parametersToConnect;
+    parametersToConnect = new parameters();
+    parametersToConnect->portToconnect = this->port;
+    parametersToConnect->IpToconnect = (char*) this->ip;
+    pthread_t thread;
+    pthread_create(&thread, nullptr, ConnectCommand::createConnect , parametersToConnect);
     *index += 2;
 }
 
 
+
 void* ConnectCommand::createConnect(void* arguments) {
-    struct parameters* parametersToOpenDataServer = (struct parameters*) arguments;
+
+    struct parameters* parametersToConnect = (struct parameters*) arguments;
     //create socket
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {
@@ -59,8 +65,8 @@ void* ConnectCommand::createConnect(void* arguments) {
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address{}; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr(parametersToOpenDataServer.IpToconnect);  //the localhost address
-    address.sin_port = htons(parametersToOpenDataServer.PortToconnect);
+    address.sin_addr.s_addr = inet_addr(parametersToConnect->IpToconnect);  //the localhost address
+    address.sin_port = htons(parametersToConnect->portToconnect);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.
 
@@ -76,7 +82,7 @@ void* ConnectCommand::createConnect(void* arguments) {
     // now the client need to send flight instructions to the server
     auto *updateValCommand = new UpdateValCommand();
     std::queue<std::pair<std::string, double>> valuesToSend = updateValCommand->getValuesToSend();
-    while (true) {
+    //while (true) {
         // values to send is queue of values so send to the simulator
         if (!valuesToSend.empty()) {
             std::pair<std::string, double> nameAccordingToClientAndValue = valuesToSend.front();
@@ -86,13 +92,13 @@ void* ConnectCommand::createConnect(void* arguments) {
             write(client_socket, message.c_str(), message.length());
         }
     }
-}
+
 
 string getNameOfVarBySimulator(const string nameAccordingToClientAndValue) {
     auto *symbolTable = new SymbolTable();
-    map<string, Variable> NameToVariableMap = symbolTable->getMap();
-    Variable var = NameToVariableMap[nameAccordingToClientAndValue];
-    return var.getName();
+    unordered_map<string, Variable*> nameToVariableMap = symbolTable->getMap();
+    Variable *var = nameToVariableMap[nameAccordingToClientAndValue];
+    return var->getName();
 }
 
 
