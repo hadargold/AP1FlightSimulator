@@ -3,8 +3,23 @@
 //
 
 #include "Condition.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include "PrintCommand.h"
+#include "VariableManager.h"
+#include "Interpreter.h"
+#include "SymbolTable.h"
 
-void Condition::execute(int &it){
+Condition::Condition(vector <string> cond){
+    this->condition = cond;
+}
+
+bool Condition::getResult(){
+    return this->result;
+}
+
+void Condition::execute(int *it){
     if(condition.size() == 1)
     {
         this->result = (condition[0] == "1") ? true : false;
@@ -26,12 +41,32 @@ void Condition::execute(int &it){
         while(i < condition.size()){
             right += condition[i];
         }
-        Variable a = new Variable("", )
-        BinaryOperator b = new BinaryOperator(sideA->calculate(), sideB->calculate());
 
+        Interpreter *stringToInterpretForConditionLeft = new Interpreter();
+        SymbolTable *symbolTable = new SymbolTable();
+        unordered_map<string, Variable *> nameOfVarToVariableMap = symbolTable->getMap();
+        stringToInterpretForConditionLeft->setVariablesByMapOfVars(nameOfVarToVariableMap);
+        Expression *expressionLeft = stringToInterpretForConditionLeft->interpret(left);
+
+        Interpreter *stringToInterpretForConditionRight = new Interpreter();
+        SymbolTable *symbolTableR = new SymbolTable();
+        unordered_map<string, Variable *> nameOfVarToVariableMapR = symbolTable->getMap();
+        stringToInterpretForConditionLeft->setVariablesByMapOfVars(nameOfVarToVariableMap);
+        Expression *expressionRight = stringToInterpretForConditionLeft->interpret(right);
 
         if(condition[conditionLocation] == ">")
-            result = sideA.calculate() > sideB ? true : false;
+            result = expressionLeft->calculate() > expressionRight->calculate() ? true : false;
+        if(condition[conditionLocation] == "<")
+            result = expressionLeft->calculate() < expressionRight->calculate() ? true : false;
+        if(condition[conditionLocation] == "!=")
+            result = expressionLeft->calculate() != expressionRight->calculate() ? true : false;
+        if(condition[conditionLocation] == "==")
+            result = expressionLeft->calculate() == expressionRight->calculate() ? true : false;
+        if(condition[conditionLocation] == "<=")
+            result = expressionLeft->calculate() <= expressionRight->calculate() ? true : false;
+        if(condition[conditionLocation] == ">=")
+            result = expressionLeft->calculate() >= expressionRight->calculate() ? true : false;
+
 
     }
 

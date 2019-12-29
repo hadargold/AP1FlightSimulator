@@ -71,13 +71,20 @@ void Lexer::rearrangeVec(){
             this->m_vec.erase(i-1);
         }
         // check print
+        bool flag = true;
+        string toPrint = "";
         if (this->m_vec[j] == "print"){
-            while(this->m_vec[j+1][this->m_vec[j+1].size()-1] != '"'){
-                this->m_vec[j+1] = this->m_vec[j+1] + this->m_vec[j+2];
-                this->m_vec.erase(i+1);
-                i++;
+            while(flag){
+                string str = m_vec[j+2];
+                int saveJ = j+1;
+                if(str[str.length()] == '"'){
+                    this->m_vec[j+2] = str.substr(0,str.length()-1);
+                    this->m_vec[j+1] += this->m_vec[j+2];
+                    flag = false;
+                    this->m_vec.erase(i+2);
+                    i++;
+                }
             }
-
         }
         if (this->m_vec[j] == "(" || this->m_vec[j] == ")"){
             this->m_vec.erase(i);

@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <mutex>
+#include <vector>
 #include <string>
 #include "ex1.h"
 #include "unordered_map"
@@ -217,16 +218,56 @@ class SymbolTable {
         Variable *engine_rpm = new Variable("/engines/engine/rpm");
         map["engine_rpm"] = engine_rpm;
     }
+    
+    string simArr [35] = {simArr[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
+    simArr[1] = "/sim/time/warp";
+    simArr[2] = "/controls/switches/magnetos";
+    simArr[3] = "/instrumentation/heading-indicator/offset-deg";
+    simArr[4] = "/instrumentation/altimeter/indicated-altitude-ft";
+    simArr[5] = "/instrumentation/altimeter/pressure-alt-ft";
+    simArr[6] = "/instrumentation/attitude-indicator/indicated-pitch-deg";
+    simArr[7] = "/instrumentation/attitude-indicator/indicated-roll-deg";
+    simArr[8] = "/instrumentation/attitude-indicator/internal-pitch-deg";
+    simArr[9] = "/instrumentation/attitude-indicator/internal-roll-deg";
+    simArr[10] = "/instrumentation/encoder/indicated-altitude-ft";
+    simArr[11] = "/instrumentation/encoder/pressure-alt-ft";
+    simArr[12] = "/instrumentation/gps/indicated-altitude-ft";
+    simArr[13] = "/instrumentation/gps/indicated-ground-speed-kt";
+    simArr[14] = "/instrumentation/gps/indicated-vertical-speed";
+    simArr[15] = "/instrumentation/heading-indicator/indicated-heading-deg";
+    simArr[16] = "/instrumentation/magnetic-compass/indicated-heading-deg";
+    simArr[17] = "/instrumentation/slip-skid-ball/indicated-slip-skid";
+    simArr[18] = "/instrumentation/turn-indicator/indicated-turn-rate";
+    simArr[19] = "/instrumentation/vertical-speed-indicator/indicated-speed-fpm";
+    simArr[20] = "/controls/flight/aileron";
+    simArr[21] = "/controls/flight/elevator";
+    simArr[22] = "/controls/flight/rudder";
+    simArr[23] = "/controls/flight/flaps";
+    simArr[24] = "/controls/engines/engine/throttle";
+    simArr[25] = "/controls/engines/current-engine/throttle";
+    simArr[26] = "/controls/switches/master-avionics";
+    simArr[27] = "/controls/switches/starter";
+    simArr[28] = "/engines/active-engine/auto-start";
+    simArr[29] = "/controls/flight/speedbrake";
+    simArr[30] = "/sim/model/c172p/brake-parking";
+    simArr[31] = "/controls/engines/engine/primer";
+    simArr[32] = "/controls/engines/current-engine/mixture";
+    simArr[33] = "/controls/switches/master-bat";
+    simArr[34] = "/controls/switches/master-alt";
+    simArr[35] = "/engines/engine/rpm";}
 
-    void addValuesFromSimToSymbolTable(vector<double> splitValues, string simArr[]) {
-        for (int i = 0; i < splitValues.size(); i++) {
-            this->map[simArr[i]] = new Variable(simArr[i], splitValues[i], 0);
-        }
-    }
 
 public:
     unordered_map<string, Variable*> getMap() {
         return this->map;
+    }
+
+    void addValuesFromSimToSymbolTable(vector<string> splitValues) {
+        //std::string::size_type sz;     // alias of size_t
+        for (int i = 0; i < splitValues.size(); i++) {
+            //double splVal = std::stod (splitValues[i],&sz);
+            this->map[simArr[i]] = new Variable(simArr[i], atof(splitValues[i]), 0);
+        }
     }
 };
 

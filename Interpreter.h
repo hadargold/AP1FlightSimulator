@@ -7,9 +7,10 @@
 
 #include <string>
 #include <map>
-#include <unordered_map>
 #include <algorithm>
 #include "Expression.h"
+#include "unordered_map"
+
 
 class Interpreter {
 private:
@@ -18,7 +19,7 @@ public:
     void tokenToMap(string* token);
     Expression* interpret(string exp);
     void setVariables(string var);
-    void setVariablesByMapOfVars(unordered_map<string,Variable*> nameOfVarToVariableMap);
+    void setVariablesByMapOfVars(unordered_map<string,Variable*> nameOfVarToVariableMap); //was : string,Variable
     ~Interpreter();
 };
 
