@@ -5,18 +5,27 @@
 #ifndef EX3_DEFINEVARCOMMAND_H
 #define EX3_DEFINEVARCOMMAND_H
 
+#include <string>
+#include "Command.h"
+#include <queue>
+
 using namespace std;
 
-class DefineValCommand :public Command {
+class UpdateValCommand :public Command {
 private:
     string varName;
     string value;
+    std::queue<std::pair<std::string, double>> valuesToSendToTheSim ;
 public:
-    DefineValCommand(string varName, string value) {
+    UpdateValCommand() = default;
+    UpdateValCommand(string varName, string value) {
         this->varName = varName;
         this->value = value;
     }
-    void execute(int& index);
+    void execute(int* index);
+    std::queue<std::pair<std::string, double>> getValuesToSend() {
+        return this->valuesToSendToTheSim;
+    }
 };
 
 #endif //EX3_DEFINEVARCOMMAND_H

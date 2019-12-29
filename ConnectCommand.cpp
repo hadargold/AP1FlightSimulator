@@ -1,24 +1,42 @@
+//
+// Created by hadar on 12/19/19.
+//
 
+#include <bits/socket.h>
+#include <sys/socket.h>
+#include <iostream>
+#include <map>
 #include "ConnectCommand.h"
 #include "VariableManager.h"
-#include "interpreter.h"
-//change this define!!!!!!!
-#define PORT 8081
+#include "Interpreter.h"
+#include <sys/socket.h>
+#include <string>
+#include <iostream>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include "UpdateValCommand.h"
+#include "SymbolTable.h"
 
-void ConnectCommand:: execute(int& index) {
-    Interpreter *stringToInterpretForPort= new Interpreter();
-    VariableManager variableManager = new VariableManager();
-    stringToInterpretForPrinting.setVariablesByMapOfVars(variableManager.getVarList());
-    Expression *expressionToPrint = stringToInterpretForPort->interpret(strPort);
-    int port = expressionToPrint->calculate();
+string getNameOfVarBySimulator(string nameAccordingToClientAndValue);
 
-
-    pthread_t thread;
-    // parameters contains the parameters to the createConnectString
-    pthread_create(&thread, nullptr, createConnect, parameters);
-    *index += 2;
+ConnectCommand :: ConnectCommand(std::string  ip, std::string  port) {
+    this->ip = ip;
+    // change the port to int
+    auto *stringToInterpretForPort= new Interpreter();
+    auto *variableManager = new VariableManager();
+    stringToInterpretForPort->setVariablesByMapOfVars(variableManager->getVarList());
+    Expression *expressionToPrint = stringToInterpretForPort->interpret(port);
+    int intPort = (int) expressionToPrint->calculate();
+    this->port = intPort;
 }
 
+void ConnectCommand:: execute(int* index) {
+    pthread_t thread;
+    // parameters contains the parameters to the createConnectString
+    pthread_create(&thread, nullptr, ConnectCommand::createConnect , nullptr);
+    *index += 2;
+}
 
 
 void* ConnectCommand::createConnect(void* parameters) {
@@ -27,14 +45,14 @@ void* ConnectCommand::createConnect(void* parameters) {
     if (client_socket == -1) {
         //error
         std::cerr << "Could not create a socket"<<std::endl;
-        return -1;
+        exit(1);
     }
 
     //We need to create a sockaddr obj to hold address of server
-    sockaddr_in address; //in means IP4
+    sockaddr_in address{}; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr("127.0.0.1");  //the localhost address
-    address.sin_port = htons(PORT);
+    address.sin_addr.s_addr = inet_addr(this->ip);  //the localhost address
+    address.sin_port = htons(this->port);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.
 
@@ -42,34 +60,32 @@ void* ConnectCommand::createConnect(void* parameters) {
     int is_connect = connect(client_socket, (struct sockaddr *)&address, sizeof(address));
     if (is_connect == -1) {
         std::cerr << "Could not connect to host server"<<std::endl;
-        return -2;
+        exit(1);
     } else {
         std::cout<<"Client is now connected to server" <<std::endl;
     }
     // the client noe is connected to the server
     // now the client need to send flight instructions to the server
-
-
-    // this is of vered!! change it!
+    auto *updateValCommand = new UpdateValCommand();
+    std::queue<std::pair<std::string, double>> valuesToSend = updateValCommand->getValuesToSend();
     while (true) {
-        if (params->data->sendNotEmpty()) {
-
-            // parameters to send
-            map<string, double> toSend = params->data->getSend();
-            string path = params->data->getBind(toSend.begin()->first);
-            double value = toSend.begin()->second;
-
-            // creating the message
-            string message = "set " + path + " " + to_string(value) + "\r\n";
-
-            ssize_t n;
-
-            // Send message to the server
-            n = write(sockfd, message.c_str(), message.length());
-
-            if (n < 0) {
-                break;
-            }
+        // values to send is queue of values so send to the simulator
+        if (!valuesToSend.empty()) {
+            std::pair<std::string, double> nameAccordingToClientAndValue = valuesToSend.front();
+            valuesToSend.pop();
+            string NameOfVarBySimulator = getNameOfVarBySimulator(nameAccordingToClientAndValue.first);
+            string message = "set " + NameOfVarBySimulator + " " + to_string(nameAccordingToClientAndValue.second) + "\r\n";
+            write(client_socket, message.c_str(), message.length());
         }
     }
 }
+
+string getNameOfVarBySimulator(const string nameAccordingToClientAndValue) {
+    auto *symbolTable = new SymbolTable();
+    map<string, Variable> NameToVariableMap = symbolTable->getMap();
+    Variable var = NameToVariableMap[nameAccordingToClientAndValue];
+    return var.getName();
+}
+
+
+

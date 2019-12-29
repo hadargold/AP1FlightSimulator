@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 
+
 using namespace std;
 
 void changeToReverse(string str, queue<string>* output, stack<string>* operatorStack);
@@ -18,6 +19,7 @@ string findNum(string str);
 void fromStackToQueue (queue<string>** output, stack<string>** operatorStack);
 bool varIsValid(string token);
 bool numIsValid(string token);
+void setVariablesByMapOfVars(map<string,Variable> nameOfVarToVariableMap);
 
 
 
@@ -175,7 +177,7 @@ void Interpreter::setVariables(string var) {
 
 void Interpreter::setVariablesByMapOfVars(map<string,Variable> nameOfVarToVariableMap) {
     map<string, Variable>::iterator it;
-    for (it = table.begin(); it != table.end(); it++)
+    for (it = nameOfVarToVariableMap.begin(); it != nameOfVarToVariableMap.end(); it++)
     {
         (this->variables)[it->first] = it->second.getValue();
     }

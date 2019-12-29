@@ -7,7 +7,7 @@
 
 class Command {
 public:
-    virtual void execute(int index) = 0;
+    virtual void execute(int* index) = 0;
     virtual ~Command(){};
 };
 

@@ -32,16 +32,16 @@ Variable& Variable::operator++(int num) {
     this->value += 1;
     return *this;
 }
-Variable & Variable::operator--(int num) {
-    auto* temp = new Variable(this->name, this->value);
-    this->value -= num;
-    return *temp;
-}
+//Variable& Variable::operator--(int num) {
+//    auto* temp = new Variable(this->nameAccordingToSim, this->value);
+//    this->value -= num;
+//    return *temp;
+//}
 double Variable::calculate() {
     return this->value;
 }
 
-Variable::Variable(string name, double value) : name(std::move(name)), value(value) {}
+//Variable::Variable(string name, double value) : nameAccordingToSim(std::move(name)), value(value) {}
 
 Variable::~Variable() = default;
 
