@@ -34,12 +34,20 @@ ConnectCommand :: ConnectCommand(std::string  ip, std::string  port) {
 void ConnectCommand:: execute(int* index) {
     pthread_t thread;
     // parameters contains the parameters to the createConnectString
-    pthread_create(&thread, nullptr, ConnectCommand::createConnect , nullptr);
+    struct parameters {
+        int portToconnect;
+        string IpToconnect;
+    };
+    parameters *parametersToOpenDataServer = new parameters();
+    parametersToOpenDataServer->portToconnect = this->port;
+    parametersToOpenDataServer->IpToconnect = this->ip;
+    pthread_create(&thread, nullptr, ConnectCommand::createConnect , parametersToOpenDataServer);
     *index += 2;
 }
 
 
-void* ConnectCommand::createConnect(void* parameters) {
+void* ConnectCommand::createConnect(void* arguments) {
+    struct parameters* parametersToOpenDataServer = (struct parameters*) arguments;
     //create socket
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {
@@ -51,8 +59,8 @@ void* ConnectCommand::createConnect(void* parameters) {
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address{}; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr(this->ip);  //the localhost address
-    address.sin_port = htons(this->port);
+    address.sin_addr.s_addr = inet_addr(parametersToOpenDataServer.IpToconnect);  //the localhost address
+    address.sin_port = htons(parametersToOpenDataServer.PortToconnect);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.
 

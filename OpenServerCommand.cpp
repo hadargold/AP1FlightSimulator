@@ -9,9 +9,13 @@
 #include <sys/socket.h>
 #include <iostream>
 #include <netinet/in.h>
+#include <unistd.h>
 #include "VariableManager.h"
 #include "Interpreter.h"
 #include "ConnectCommand.h"
+#include <regex>
+#include <complex>
+#include "SymbolTable.h"
 
 
 OpenServerCommand :: OpenServerCommand(std::string strPort) {
@@ -30,12 +34,17 @@ vector <string> splitByComma(string stringOfValuesFromSim);
 void OpenServerCommand:: execute(int* index) {
     pthread_t thread;
     // parameters contains the parameters to the createConnectString
-    pthread_create(&thread, nullptr, openDataServer, nullptr);
+    struct parameters {
+        int portToconnect;
+    };
+    parameters *parametersToOpenDataServer = new parameters();
+    parametersToOpenDataServer->portToconnect = this->port;
+    pthread_create(&thread, nullptr, openDataServer, parametersToOpenDataServer);
     *index += 1;
 }
 
-void* OpenServerCommand::openDataServer(void* parameters) {
-
+void* OpenServerCommand::openDataServer(void* arguments) {
+    struct parameters* parametersToOpenDataServer = (struct parameters*) arguments;
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -49,7 +58,7 @@ void* OpenServerCommand::openDataServer(void* parameters) {
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
-    address.sin_port = htons(this->port);
+    address.sin_port = htons(parametersToOpenDataServer.portToconnect);
     //we need to convert our number
     // to a number that the network understands.
 
@@ -101,8 +110,8 @@ void* OpenServerCommand::openDataServer(void* parameters) {
 
 void updateValuesInSymbolTable(const string stringOfValuesFromSim) {
     vector <string> splitValues = splitByComma(stringOfValuesFromSim);
-    /////continue!
-
+    auto *symbolTable = new SymbolTable();
+    symbolTable->addValuesFromSimToSymbolTable(splitValues);
 }
 
 vector <string> splitByComma(string stringOfValuesFromSim) {
@@ -112,8 +121,10 @@ vector <string> splitByComma(string stringOfValuesFromSim) {
     while (regex_search(stringOfValuesFromSim, match, r)) {
         string str = match[0];
         splitValues.push_back(str);
+        // the index of the matching
+        int indexOfMatching = match.position();
         // search again on the continue of the string
-        stringOfValuesFromSim = match.suffix().stringOfValuesFromSim();
+        stringOfValuesFromSim = stringOfValuesFromSim.substr(indexOfMatching + match.length());
     }
     return splitValues;
 }

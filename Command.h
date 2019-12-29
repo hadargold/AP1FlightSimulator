@@ -8,7 +8,7 @@
 class Command {
 public:
     virtual void execute(int* index) = 0;
-    virtual ~Command(){};
+    virtual ~Command()= default;;
 };
 
 #endif //EX3_COMMAND_H
