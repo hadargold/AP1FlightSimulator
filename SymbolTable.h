@@ -137,8 +137,8 @@ class SymbolTable {
             {"engines/engine/rpm","rpm"} //
     };
 
-   unordered_map <string, Variable*> map;
-void insertToMap() {
+
+void insertToMap(unordered_map <string, Variable*> map) {
     Variable *airspeed_indicator_indicated_speed_kt = new Variable(
             "/instrumentation/airspeed-indicator/indicated-speed-kt");
     map["airspeed_indicator_indicated_speed_kt"] = airspeed_indicator_indicated_speed_kt;

@@ -9,9 +9,12 @@
 #include <sys/socket.h>
 #include <iostream>
 #include <netinet/in.h>
+#include <unistd.h>
 #include "VariableManager.h"
 #include "Interpreter.h"
 #include "ConnectCommand.h"
+#include <regex>
+#include "SymbolTable.h"
 
 
 OpenServerCommand :: OpenServerCommand(std::string strPort) {
@@ -79,7 +82,7 @@ void* OpenServerCommand::openDataServer(void* parameters) {
     close(socketfd); //closing the listening socket
 
     //reading from client
-    while (true) {
+    //while (true) {
         string stringOfValuesFromSim = "";
         char buffer[1024] = {0};
         //valread is 0 if there is no data to read. -1 is there was an erroe
@@ -101,8 +104,8 @@ void* OpenServerCommand::openDataServer(void* parameters) {
 
 void updateValuesInSymbolTable(const string stringOfValuesFromSim) {
     vector <string> splitValues = splitByComma(stringOfValuesFromSim);
-    /////continue!
-
+    auto *symbolTable = new SymbolTable();
+    symbolTable->addValuesFromSimToSymbolTable(splitValues);
 }
 
 vector <string> splitByComma(string stringOfValuesFromSim) {
@@ -112,8 +115,10 @@ vector <string> splitByComma(string stringOfValuesFromSim) {
     while (regex_search(stringOfValuesFromSim, match, r)) {
         string str = match[0];
         splitValues.push_back(str);
+        // the index of the matching
+        int indexOfMatching = match.position();
         // search again on the continue of the string
-        stringOfValuesFromSim = match.suffix().stringOfValuesFromSim();
+        stringOfValuesFromSim = stringOfValuesFromSim.substr(indexOfMatching + match.length());
     }
     return splitValues;
 }
