@@ -15,6 +15,8 @@ private:
     int direction;
     double value;
 public:
+    Variable();
+    Variable(string name);
     Variable(string name, double value, int direction);
     string getName() {
         return nameAccordingToSim;

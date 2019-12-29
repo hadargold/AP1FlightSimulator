@@ -72,7 +72,7 @@ void Lexer::rearrangeVec(){
         }
         // check print
         if (this->m_vec[j] == "print"){
-            while(this->m_vec[j+1][this->m_vec[j+1].size()] != '"'){
+            while(this->m_vec[j+1][this->m_vec[j+1].size()-1] != '"'){
                 this->m_vec[j+1] = this->m_vec[j+1] + this->m_vec[j+2];
                 this->m_vec.erase(i+1);
                 i++;

@@ -6,11 +6,13 @@
 #include "PrintCommand.h"
 #include "UpdateValCommand.h"
 #include "OpenServerCommand.h"
-using namespace std
+
+using namespace std;
 
 // return true if there is a command represented by the string
 bool CommandsManager::isCommand(const string &stringRepresentACommand) {
-    map<string, Command*> :: iterator it = commandToNumOfParameters.find(stringRepresentACommand);
+    // was map<string, command*  > !!!!!!!!
+    map<string, int > :: iterator it = commandToNumOfParameters.find(stringRepresentACommand);
     // if find didnt return pointer to the end of the map so the key is exists
     if (it != commandToNumOfParameters.end()) {
         return true;
@@ -28,7 +30,7 @@ int getNumOfParametersByString(const string &stringRepresentACommand) {
 }
 
 
-Command* commandsFactory(const sring lexer ,int i) {
+Command* commandsFactory(const string lexer ,int i) {
     enum commandsName {WHILE, IF, OPEN_DATA_SERVER ,CONNECT,VAR,SLEEP,PRINT};
     if (lexer[i].compare("while")) {
 
@@ -57,3 +59,5 @@ void CommandsManager::createCommandsAndNumOfParameters() {
     commandToNumOfParameters["print"] = 1;
 
 }
+
+CommandsManager::CommandsManager(const map<string, &stringToCommand) : stringToCommand(stringToCommand) {}

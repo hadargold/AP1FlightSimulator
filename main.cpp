@@ -15,10 +15,10 @@
 int main(){
         // check the number of arguments is valid
         //if (argc == 2) {
-            vector<string> a = lexer(argFiles[1]);
-            CommandsManager *commandsManager = new CommandsManager();
-            parser(commandsManager, a);
-            delete (commandsManager);
+//            vector<string> a = lexer(argFiles[1]);
+//            CommandsManager *commandsManager = new CommandsManager();
+//            parser(commandsManager, a);
+//            delete (commandsManager);
         //} else {
          //   throw "Invalid main";
         //}

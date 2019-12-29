@@ -33,7 +33,7 @@ Variable& Variable::operator++(int num) {
     return *this;
 }
 Variable & Variable::operator--(int num) {
-    auto* temp = new Variable(this->name, this->value);
+    auto* temp = new Variable(this->nameAccordingToSim, this->value, this->direction);
     this->value -= num;
     return *temp;
 }
@@ -41,7 +41,19 @@ double Variable::calculate() {
     return this->value;
 }
 
-Variable::Variable(string name, double value) : name(std::move(name)), value(value) {}
+Variable::Variable() {
+    this->nameAccordingToSim = "";
+    this->value = 0;
+    this->direction = 0;
+}
+
+Variable::Variable(string nameAccordingToSim) {
+    this->nameAccordingToSim = nameAccordingToSim;
+    this->value = 0;
+    this->direction = 0;
+}
+
+Variable::Variable(string nameAccordingToSim, double value, int direction) : nameAccordingToSim(std::move(nameAccordingToSim)), value(value), direction(direction) {}
 
 Variable::~Variable() = default;
 
