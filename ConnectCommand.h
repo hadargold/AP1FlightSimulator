@@ -5,18 +5,18 @@
 #ifndef EX3_CONNECTCOMMAND_H
 #define EX3_CONNECTCOMMAND_H
 #include "Command.h"
+#include <string>
+#include <iostream>
+
 
 class ConnectCommand: public Command{
 private:
-    string ip;
-    string strPort;
+     std::string ip;
+     int port;
 public:
-    explicit ConnectCommand(string ip, string port) {
-        this->ip = ip;
-        this->strPort = port;
-    }
-    void execute(int& index);
-    void* createConnect(void* parameters);
+    ConnectCommand(std::string  ip, std::string  port);
+    void execute(int* index) override;
+    static void* createConnect(void* parameters);
 };
 
 #endif //EX3_CONNECTCOMMAND_H

@@ -4,16 +4,17 @@
 
 #include "UpdateValCommand.h"
 #include "SymbolTable.h"
+#include "Interpreter.h"
 
-void DefineValCommand :: execute(int& index) {
+void UpdateValCommand :: execute(int* index) {
     // change the value to double by shunting yard
-    Interpreter *stringToInterpretForUpdateVal = new Interpreter();
-    SymbolTable symbolTable = new SymbolTable();
-    map<string,Variable> nameOfVarToVariableMap = symbolTable.getMap();
-    stringToInterpretForPrinting.setVariablesByMapOfVars(nameOfVarToVariableMap);
-    Expression *expressionToUpdate = stringToInterpretForUpdateVal->interpret(value);
+    auto *stringToInterpretForUpdateVal = new Interpreter();
+    auto *symbolTable = new SymbolTable();
+    map<string,Variable> nameOfVarToVariableMap = symbolTable->getMap();
+    stringToInterpretForUpdateVal->setVariablesByMapOfVars(nameOfVarToVariableMap);
+    Expression *valueToUpdate = stringToInterpretForUpdateVal->interpret(value);
 
-    SymbolTable symbolTable  = new SymbolTable();
-    symbolTable.setValueByNameByClinet(this->varName, expressionToPrint->calculate());
+    // add the value and the name to a queue in order to sent it to the simulator.
+    valuesToSendToTheSim.push(make_pair(this->varName, valueToUpdate->calculate()));
     *index += 2;
 }

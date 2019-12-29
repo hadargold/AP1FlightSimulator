@@ -17,6 +17,7 @@ public:
     void tokenToMap(string* token);
     Expression* interpret(string exp);
     void setVariables(string var);
+    void setVariablesByMapOfVars(map<string,Variable> nameOfVarToVariableMap)
     ~Interpreter();
 };
 

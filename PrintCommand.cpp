@@ -6,7 +6,7 @@
 #include <string>
 #include "PrintCommand.h"
 #include "VariableManager.h"
-#include "interpreter.h"
+#include "Interpreter.h"
 void PrintCommand:: execute(int& index) {
     // if the toPrint is string- print it (without "" )
     if (toPrint[0] == '"' && toPrint[toPrint.length() - 1] == '"') {

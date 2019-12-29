@@ -102,15 +102,15 @@ public:
     double calculate() override;
 };
 
-class Interpreter {
-private:
-    map< string, string > variables;
-public:
-    void tokenToMap(string* token);
-    Expression* interpret(string exp);
-    void setVariables(string var);
-    ~Interpreter();
-};
+//class Interpreter {
+//private:
+//    map< string, string > variables;
+//public:
+//    void tokenToMap(string* token);
+//    Expression* interpret(string exp);
+//    void setVariables(string var);
+//    ~Interpreter();
+//};
 
 
 #endif //UNTITLED_EX1_H
