@@ -23,9 +23,10 @@ public:
     explicit CommandsManager(const map<string, Command *> &stringToCommand);
     Command* commandsFactory(vector <string> lexer ,int i);
     //void createCommandsAndNumOfParameters();
+    //int getNumOfParametersByString(const string &stringRepresentACommand);
     bool isCommand(const string &stringRepresentACommand);
     Command* getCommandByString(const string &stringRepresentACommand);
-    //int getNumOfParametersByString(const string &stringRepresentACommand);
+
 };
 
 
