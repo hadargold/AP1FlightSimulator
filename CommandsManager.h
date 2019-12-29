@@ -7,6 +7,7 @@
 #include <string>
 #include "unordered_map"
 #include "Command.h"
+#include "ex1.h"
 
 using namespace std;
 
