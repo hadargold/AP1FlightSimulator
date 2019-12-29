@@ -6,10 +6,20 @@
 #include <iostream>
 #include <map>
 #include "ex1.h"
+#include <string>
+#include <chrono>
+#include <thread>
+#include "SleepCommand.h"
+#include "Interpreter.h"
+#include "VariableManager.h"
+#include "ConnectCommand.h"
+#include "Command.h"
 
-using namespace std
 
-void VarCommand ::VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim) {
+
+using namespace std;
+
+VarCommand :: VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim) {
     enum  directions {RIGHT, LEFT};
     this->nameAccordingToClient = nameAccordingToClient;
     this->nameAccordingToSim = nameAccordingToSim;
@@ -20,13 +30,12 @@ void VarCommand ::VarCommand(string nameAccordingToClient, string direction, str
     }
 }
 
-void VarCommand:: execute(int& index) {
-    enum  directions {RIGHT, LEFT};
-    SymbolTable symbolTable  = new SymbolTable();
-    map<string,Variable> nameOfVarToVariableMap = symbolTable.getMap();
+void VarCommand:: execute(int* index) {
+    SymbolTable *symbolTable  = new SymbolTable();
+    unordered_map<string,Variable*> nameOfVarToVariableMap = symbolTable->getMap();
     // create the Variable
-    Variable newVar = new Variable(nameAccordingToSim, 0, direction);
-    nameOfVarToVariableMap.insert (pair<string,Variable>(nameAccordingToClient,newVar))
-
+    const double defaultVal = 0;
+    Variable *newVar = new Variable(nameAccordingToSim, defaultVal, direction);
+    nameOfVarToVariableMap.insert(pair<string,Variable*>(nameAccordingToClient,newVar));
     *index += 3;
 }

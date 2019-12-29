@@ -6,20 +6,18 @@
 #define EX3_VARCOMMAND_H
 
 #include "SymbolTable.h"
+#include "Command.h"
+
 using namespace std;
 
 class VarCommand :public Command {
 private:
     string nameAccordingToClient;
-    string direction;
+    int direction;
     string nameAccordingToSim;
 public:
-    VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim) {
-        this->nameAccordingToClient = nameAccordingToClient;
-        this->direction = direction;
-        this->nameAccordingToSim = nameAccordingToSim;
-    }
-    void execute(int& index, SymbolTable symbolTable);
+    VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim);
+    void execute(int* index);
 };
 
 

@@ -7,6 +7,8 @@
 #include "UpdateValCommand.h"
 #include "OpenServerCommand.h"
 #include "ex1.h"
+#include "VarCommand.h"
+
 
 using namespace std;
 
@@ -26,19 +28,19 @@ Command* CommandsManager::getCommandByString(const string &stringRepresentAComma
     return stringToCommand[stringRepresentACommand];
 }
 
-int getNumOfParametersByString(const string &stringRepresentACommand) {
-    return commandToNumOfParameters[stringRepresentACommand];
-}
+//int getNumOfParametersByString(const string &stringRepresentACommand) {
+//    return commandToNumOfParameters[stringRepresentACommand];
+//}
 
 
-Command* commandsFactory(const string lexer ,int i) {
-    enum commandsName {WHILE, IF, OPEN_DATA_SERVER ,CONNECT,VAR,SLEEP,PRINT};
+Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
+    //enum commandsName {WHILE, IF, OPEN_DATA_SERVER ,CONNECT,VAR,SLEEP,PRINT};
     if (lexer[i].compare("while")) {
 
     } else if (lexer[i].compare("if")) {
 
     } else if (lexer[i].compare("var")) {
-        return new Variable(lexer[i+1], lexer[i+2], lexer[i+3]);
+        return new VarCommand(lexer[i+1], lexer[i+2], lexer[i+3]);
     }else if (lexer[i].compare("openDataServer")) {
         return new OpenServerCommand(lexer[i+1]);
     }else if (lexer[i].compare("connectControlClient")) {
@@ -50,15 +52,15 @@ Command* commandsFactory(const string lexer ,int i) {
     }
 }
 
-void CommandsManager::createCommandsAndNumOfParameters() {
-    commandToNumOfParameters["while"] = // do it!!;
-    commandToNumOfParameters["if"] = // do it!!;
-    commandToNumOfParameters["openDataServer"] = 1;
-    commandToNumOfParameters["connect"] = 2;
-    commandToNumOfParameters["var"] = // do it!!;
-    commandToNumOfParameters["sleep"] = 1;
-    commandToNumOfParameters["print"] = 1;
-
-}
+//void CommandsManager::createCommandsAndNumOfParameters() {
+//    commandToNumOfParameters["while"] = // do it!!;
+//    commandToNumOfParameters["if"] = // do it!!;
+//    commandToNumOfParameters["openDataServer"] = 1;
+//    commandToNumOfParameters["connect"] = 2;
+//    commandToNumOfParameters["var"] = // do it!!;
+//    commandToNumOfParameters["sleep"] = 1;
+//    commandToNumOfParameters["print"] = 1;
+//
+//}
 
 CommandsManager::CommandsManager(const map<string, &stringToCommand) : stringToCommand(stringToCommand) {}

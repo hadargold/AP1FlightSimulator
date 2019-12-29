@@ -1,16 +1,18 @@
 #include "Parser.h"
-#include "CommandsManager.h
-void parser(CommandsManager* commandsManager, vector <string> lexer) {
+#include "CommandsManager.h"
+#include "UpdateValCommand.h"
+
+void Parser :: parse(CommandsManager* commandsManager, vector <string> lexer) {
     for (int i = 0; i < lexer.size(); ++i) {
         // if this is command - execute it
         if (commandsManager->isCommand(lexer[i])) {
-            Command *c = commandFactory(lexer, i);
-            c->execute(i);
+            Command *c = commandsManager->commandsFactory(lexer, i);
+            c->execute(&i);
         }
             // if the command is "=" so the i is on the var name and the next index is the "="
         else if (lexer[i+1] == "=") {
-            Command *c = new DefineValCommand(lexer[i], lexer[i+2]);
-            c->execute(i);
+            Command *c = new UpdateValCommand(lexer[i], lexer[i+2]);
+            c->execute(&i);
         }
     }
 //    vector <string> blockCommand = {"while", "if"};

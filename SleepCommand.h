@@ -4,19 +4,15 @@
 
 
 #include "Command.h"
-#include "Expression.h"
-#include "Parser.h"
-#include "unistd.h"
-using namespace std;
+#include <string>
+#include <iostream>
 
 class SleepCommand : public Command {
-    string timeToSleep;
-
+private:
+    int timeToSleep = 0;
 public:
-    SleepCommand(string timeToSleep) {
-        this->timeToSleep = timeToSleep;
-    }
-    void execute(int index);
+    SleepCommand(std::string timeToSleep);
+    void execute(int* index) override;
 };
 
 

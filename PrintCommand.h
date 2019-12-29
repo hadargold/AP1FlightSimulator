@@ -17,7 +17,7 @@ private:
     string toPrint;
 public:
     explicit PrintCommand(string sPrint) { this->toPrint = sPrint; }
-    void execute(int& index);
+    void execute(int* index);
 };
 
 

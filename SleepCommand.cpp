@@ -1,20 +1,25 @@
-#include <iostream>
+#include <string>
 #include <chrono>
 #include <thread>
 #include "SleepCommand.h"
+#include "Interpreter.h"
+#include "VariableManager.h"
+#include "ConnectCommand.h"
 
 
-void SleepCommand::execute(int& index)
+SleepCommand :: SleepCommand(string strTime) {
+    // change the timeToSleep to int
+    auto *stringToInterpretForPort= new Interpreter();
+    auto *variableManager = new VariableManager();
+    stringToInterpretForPort->setVariablesByMapOfVars(variableManager->getVarList());
+    Expression *expressionToPrint = stringToInterpretForPort->interpret(strTime);
+    int intTime = (int) expressionToPrint->calculate();
+    this->timeToSleep = intTime;
+}
+
+void SleepCommand::execute(int* index)
 {
-    // ask hadar what is getNumericExpression.
-    //check time od sleep
-    double timeOfSleep = 0;
-    Expression* varValue = this->parser->getNumericExpression(it);
-    if(varValue != NULL) {
-        timeOfSleep = varValue->calculate();
-    }
-
     //from chrono
-    this_thread::sleep_for(std::chrono::milliseconds((int) timeOfSleep));
+    this_thread::sleep_for(std::chrono::milliseconds((int) timeToSleep));
     *index += 2;
 }

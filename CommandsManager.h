@@ -16,12 +16,12 @@ private:
 
 public:
     map <string , int> commandToNumOfParameters; // was in private
-    CommandsManager(const map<string, Command *> &stringToCommand);
-    Command* commandsFactory(const string lexer,int i,int numOfParameters);
-    void createCommandsAndNumOfParameters();
+    explicit CommandsManager(const map<string, Command *> &stringToCommand);
+    Command* commandsFactory(vector <string> lexer ,int i);
+    //void createCommandsAndNumOfParameters();
     bool isCommand(const string &stringRepresentACommand);
     Command* getCommandByString(const string &stringRepresentACommand);
-    int getNumOfParametersByString(const string &stringRepresentACommand);
+    //int getNumOfParametersByString(const string &stringRepresentACommand);
 };
 
 

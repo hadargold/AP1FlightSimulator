@@ -2,7 +2,15 @@
 #define EX3_PARSER_H
 
 #include <string>
+#include "CommandsManager.h"
+#include "Command.h"
 
-void parser(vector <string> lexer) ;
+class Parser{
+public:
+    void parse(CommandsManager* commandsManager ,vector <string> lexer) ;
+};
+
+
+
 
 #endif //EX3_PARSER_H
