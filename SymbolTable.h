@@ -256,7 +256,6 @@ class SymbolTable {
     simArr[34] = "/controls/switches/master-alt";
     simArr[35] = "/engines/engine/rpm";}
 
-
 public:
     unordered_map<string, Variable*> getMap() {
         return this->map;

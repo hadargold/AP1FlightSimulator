@@ -10,7 +10,7 @@ void UpdateValCommand :: execute(int* index) {
     // change the value to double by shunting yard
     auto *stringToInterpretForUpdateVal = new Interpreter();
     auto *symbolTable = new SymbolTable();
-    map<string,Variable> nameOfVarToVariableMap = symbolTable->getMap();
+    unordered_map<string,Variable*> nameOfVarToVariableMap = symbolTable->getMap();
     stringToInterpretForUpdateVal->setVariablesByMapOfVars(nameOfVarToVariableMap);
     Expression *valueToUpdate = stringToInterpretForUpdateVal->interpret(value);
 
