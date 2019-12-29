@@ -85,17 +85,30 @@ int main(){
 
 //yuval:
     CommandsManager *commandsManager = new CommandsManager();
-//    Parser *parser = new Parser();
-//    parser->parse(commandsManager,lexerVec);
+    Parser *parser = new Parser();
+    vector <string> lexerForTest;
+    lexerForTest.push_back("openDataServer");
+    lexerForTest.push_back("5400");
+    lexerForTest.push_back("connectControlClient");
+    lexerForTest.push_back("127.0.0.1");
+    lexerForTest.push_back("5402");
+    lexerForTest.push_back("var");
+    lexerForTest.push_back("warp");
+    lexerForTest.push_back("->");
+    lexerForTest.push_back("sim\"/sim/time/warp\"");
+    //cout << "sim\"/sim/time/warp\"" << endl;
+    int i = 0;
+    parser->parse(commandsManager,lexerForTest);
 
 // test openDataServer:
-    //vector <string> lexerForTest;
-    //lexerForTest.push_back("openDataServer");
-    //lexerForTest.push_back("5400");
-    int i = 0;
-    commandsManager -> commandsFactory(lexerVec, i);
-    //Command *c = commandsManager -> commandsFactory(lexerVec, i);
-    //c->execute(&i);
+//    vector <string> lexerForTest;
+//   lexerForTest.push_back("connectControlClient");
+//    lexerForTest.push_back("127.0.0.1");
+//   lexerForTest.push_back("5402");
+//    int i = 0;
+//    //commandsManager -> commandsFactory(lexerVec, i);
+//    Command *c = commandsManager -> commandsFactory(lexerVec, i);
+//    c->execute(&i);
 
 
 

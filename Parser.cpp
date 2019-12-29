@@ -4,6 +4,7 @@
 
 void Parser :: parse(CommandsManager* commandsManager, vector <string> lexer) {
     for (int i = 0; i < lexer.size(); ++i) {
+        cout << "i is: " << i << endl;
         // if this is command - execute it
         if (commandsManager->isCommand(lexer[i])) {
             Command *c = commandsManager -> commandsFactory(lexer, i);

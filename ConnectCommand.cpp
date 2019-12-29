@@ -52,8 +52,9 @@ void ConnectCommand:: execute(int* index) {
 
 
 void* ConnectCommand::createConnect(void* arguments) {
-
+    cout << "here" << endl;
     struct parameters* parametersToConnect = (struct parameters*) arguments;
+    cout << "here2" << endl;
     //create socket
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {

@@ -268,6 +268,10 @@ bool frontIsNumber(string front) {
 Expression *createExp(queue<string> *output) {
     Expression *tempExp = nullptr;
     Value* tempNum = nullptr;
+    if (output->size() == 1 && frontIsNumber(output->front())) {
+        double num = stod(output->front());
+        return new Value(num);
+    }
     try {
         stack<Value> numStack;
         double res = 0;
@@ -318,7 +322,8 @@ Expression *createExp(queue<string> *output) {
                 delete tempExp;
                 tempExp = nullptr;
             }
-        } numStack.pop();
+        }
+        numStack.pop();
         if (!numStack.empty()) {
             throw "bad input";
         }
