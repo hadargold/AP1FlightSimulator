@@ -89,12 +89,13 @@ int main(){
 //    parser->parse(commandsManager,lexerVec);
 
 // test openDataServer:
-    vector <string> lexerForTest;
-    lexerForTest.push_back("openDataServer");
-    lexerForTest.push_back("5400");
+    //vector <string> lexerForTest;
+    //lexerForTest.push_back("openDataServer");
+    //lexerForTest.push_back("5400");
     int i = 0;
-    Command *c = commandsManager -> commandsFactory(lexerVec, i);
-    c->execute(&i);
+    commandsManager -> commandsFactory(lexerVec, i);
+    //Command *c = commandsManager -> commandsFactory(lexerVec, i);
+    //c->execute(&i);
 
 
 

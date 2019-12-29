@@ -36,19 +36,20 @@ Command* CommandsManager::getCommandByString(const string &stringRepresentAComma
 
 Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
     //enum commandsName {WHILE, IF, OPEN_DATA_SERVER ,CONNECT,VAR,SLEEP,PRINT};
-    if (lexer[i].compare("while")) {
-
-    } else if (lexer[i].compare("if")) {
-
-    } else if (lexer[i].compare("var")) {
+//    if (lexer[i].compare("while") == 0) {
+//
+//    } else if (lexer[i].compare("if") == 0) {
+//
+//    } else
+      if (lexer[i].compare("var") == 0) {
         return new VarCommand(lexer[i+1], lexer[i+2], lexer[i+3]);
-    }else if (lexer[i].compare("openDataServer")) {
+    }else if (lexer[i].compare("openDataServer") == 0) {
         return new OpenServerCommand(lexer[i+1]);
-    }else if (lexer[i].compare("connectControlClient")) {
+    }else if (lexer[i].compare("connectControlClient") == 0) {
         return new ConnectCommand(lexer[i+1].c_str(), lexer[i+2]);
-    }else if (lexer[i].compare("sleep")) {
+    }else if (lexer[i].compare("sleep") == 0) {
         return new SleepCommand(lexer[i+1]);
-    }else if (lexer[i].compare("print")) {
+    }else if (lexer[i].compare("print") == 0) {
         return new PrintCommand(lexer[i+1]);
     }
 }

@@ -132,6 +132,7 @@ private:
 //            {"controls/switches/master-bat",""},
 //            {"controls/switches/master-alt",""},
 //            {"engines/engine/rpm","rpm"} //
+
 //    };
 
 //unordered_map <string, Variable*> map;
