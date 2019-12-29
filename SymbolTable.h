@@ -15,6 +15,7 @@
 
 
 class SymbolTable {
+private:
     //Variable * t = new Variable();
     unordered_map<string, Variable *> map;
 
