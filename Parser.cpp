@@ -1,5 +1,7 @@
 #include "Parser.h"
-#include "CommandsManager.h
+#include "CommandsManager.h"
+#include "Command.h"
+
 void parser(CommandsManager* commandsManager, vector <string> lexer) {
     for (int i = 0; i < lexer.size(); ++i) {
         // if this is command - execute it

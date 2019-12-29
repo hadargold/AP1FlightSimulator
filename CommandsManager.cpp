@@ -26,9 +26,9 @@ Command* CommandsManager::getCommandByString(const string &stringRepresentAComma
     return stringToCommand[stringRepresentACommand];
 }
 
-int getNumOfParametersByString(const string &stringRepresentACommand) {
-    return commandToNumOfParameters[stringRepresentACommand];
-}
+//int getNumOfParametersByString(const string &stringRepresentACommand) {
+//    return commandToNumOfParameters[stringRepresentACommand];
+//}
 
 
 Command* commandsFactory(const string lexer ,int i) {

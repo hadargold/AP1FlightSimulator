@@ -15,51 +15,87 @@
 
 class SymbolTable {
     Variable * t = new Variable();
+    string simArr [36]= { simArr[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
+    simArr[1] = "/sim/time/warp";
+    simArr[2] = "/controls/switches/magnetos";
+    simArr[3] = "/instrumentation/heading-indicator/offset-deg";
+    simArr[4] = "/instrumentation/altimeter/indicated-altitude-ft";
+    simArr[5] = "/instrumentation/altimeter/pressure-alt-ft";
+    simArr[6] = "/instrumentation/attitude-indicator/indicated-pitch-deg";
+    simArr[7] = "/instrumentation/attitude-indicator/indicated-roll-deg";
+    simArr[8] = "/instrumentation/attitude-indicator/internal-pitch-deg";
+    simArr[9] = "/instrumentation/attitude-indicator/internal-roll-deg";
+    simArr[10] = "/instrumentation/encoder/indicated-altitude-ft";
+    simArr[11] = "/instrumentation/encoder/pressure-alt-ft";
+    simArr[12] = "/instrumentation/gps/indicated-altitude-ft";
+    simArr[13] = "/instrumentation/gps/indicated-ground-speed-kt";
+    simArr[14] = "/instrumentation/gps/indicated-vertical-speed";
+    simArr[15] = "/instrumentation/heading-indicator/indicated-heading-deg";
+    simArr[16] = "/instrumentation/magnetic-compass/indicated-heading-deg";
+    simArr[17] = "/instrumentation/slip-skid-ball/indicated-slip-skid";
+    simArr[18] = "/instrumentation/turn-indicator/indicated-turn-rate";
+    simArr[19] = "/instrumentation/vertical-speed-indicator/indicated-speed-fpm";
+    simArr[20] = "/controls/flight/aileron";
+    simArr[21] = "/controls/flight/elevator";
+    simArr[22] = "/controls/flight/rudder";
+    simArr[23] = "/controls/flight/flaps";
+    simArr[24] = "/controls/engines/engine/throttle";
+    simArr[25] = "/controls/engines/current-engine/throttle";
+    simArr[26] = "/controls/switches/master-avionics";
+    simArr[27] = "/controls/switches/starter";
+    simArr[28] = "/engines/active-engine/auto-start";
+    simArr[29] = "/controls/flight/speedbrake";
+    simArr[30] = "/sim/model/c172p/brake-parking";
+    simArr[31] = "/controls/engines/engine/primer";
+    simArr[32] = "/controls/engines/current-engine/mixture";
+    simArr[33] = "/controls/switches/master-bat";
+    simArr[34] = "/controls/switches/master-alt";
+    simArr[35] = "/engines/engine/rpm";};
     map <string, int> check = {
             {"airspeed-indicator_indicated-speed-kt" , 4}
     };
 //    map <string, Variable*> mapa = {
 //            {"airspeed-indicator_indicated-speed-kt" , new Variable()}
-    };
+  //  };
     
-        map <string, Variable*> mapa = {
-            {"airspeed-indicator_indicated-speed-kt" , new Variable()},
-            {"time_warp" , new Variable()},
-            {"switches_magnetos" , new Variable()},
-            {"heading-indicator_offset-deg" , new Variable()},
-            {"altimeter_indicated-altitude-ft" , new Variable()},
-            {"altimeter_pressure-alt-ft" , new Variable()},
-            {"attitude-indicator_indicated-pitch-deg" , new Variable()},
-            {"attitude-indicator_indicated-roll-deg" , new Variable()},
-            {"attitude-indicator_internal-pitch-deg" , new Variable()},
-            {"attitude-indicator_internal-roll-deg" , new Variable()},
-            {"encoder_indicated-altitude-ft" , new Variable()},
-            {"encoder_pressure-alt-ft" , new Variable()},
-            {"gps_indicated-altitude-ft" , new Variable()},
-            {"gps_indicated-ground-speed-kt" , new Variable()},
-            {"gps_indicated-vertical-speed" , new Variable()},
-            {"indicated-heading-deg" , new Variable()},
-            {"magnetic-compass_indicated-heading-deg" , new Variable()},
-            {"slip-skid-ball_indicated-slip-skid" , new Variable()},
-            {"turn-indicator_indicated-turn-rate" , new Variable()},
-            {"vertical-speed-indicator_indicated-speed-fpm" , new Variable()},
-            {"flight_aileron" , new Variable()},
-            {"flight_elevator" , new Variable()},
-            {"flight_rudder" , new Variable()},
-            {"flight_flaps" , new Variable()},
-            {"engine_throttle" , new Variable()},
-            {"current-engine_throttle" , new Variable()},
-            {"switches_master-avionics" , new Variable()},
-            {"switches_starter" , new Variable()},
-            {"active-engine_auto-start" , new Variable()},
-            {"flight_speedbrake" , new Variable()},
-            {"c172p_brake-parking" , new Variable()},
-            {"engine_primer" , new Variable()},
-            {"current-engine_mixture" , new Variable()},
-            {"switches_master-bat" , new Variable()},
-            {"switches_master-alt" , new Variable()},
-            {"engine_rpm" , new Variable()}
-    };
+//        map <string, Variable*> mapa = {
+//            {"airspeed-indicator_indicated-speed-kt" , new Variable()},
+//            {"time_warp" , new Variable()},
+//            {"switches_magnetos" , new Variable()},
+//            {"heading-indicator_offset-deg" , new Variable()},
+//            {"altimeter_indicated-altitude-ft" , new Variable()},
+//            {"altimeter_pressure-alt-ft" , new Variable()},
+//            {"attitude-indicator_indicated-pitch-deg" , new Variable()},
+//            {"attitude-indicator_indicated-roll-deg" , new Variable()},
+//            {"attitude-indicator_internal-pitch-deg" , new Variable()},
+//            {"attitude-indicator_internal-roll-deg" , new Variable()},
+//            {"encoder_indicated-altitude-ft" , new Variable()},
+//            {"encoder_pressure-alt-ft" , new Variable()},
+//            {"gps_indicated-altitude-ft" , new Variable()},
+//            {"gps_indicated-ground-speed-kt" , new Variable()},
+//            {"gps_indicated-vertical-speed" , new Variable()},
+//            {"indicated-heading-deg" , new Variable()},
+//            {"magnetic-compass_indicated-heading-deg" , new Variable()},
+//            {"slip-skid-ball_indicated-slip-skid" , new Variable()},
+//            {"turn-indicator_indicated-turn-rate" , new Variable()},
+//            {"vertical-speed-indicator_indicated-speed-fpm" , new Variable()},
+//            {"flight_aileron" , new Variable()},
+//            {"flight_elevator" , new Variable()},
+//            {"flight_rudder" , new Variable()},
+//            {"flight_flaps" , new Variable()},
+//            {"engine_throttle" , new Variable()},
+//            {"current-engine_throttle" , new Variable()},
+//            {"switches_master-avionics" , new Variable()},
+//            {"switches_starter" , new Variable()},
+//            {"active-engine_auto-start" , new Variable()},
+//            {"flight_speedbrake" , new Variable()},
+//            {"c172p_brake-parking" , new Variable()},
+//            {"engine_primer" , new Variable()},
+//            {"current-engine_mixture" , new Variable()},
+//            {"switches_master-bat" , new Variable()},
+//            {"switches_master-alt" , new Variable()},
+//            {"engine_rpm" , new Variable()}
+//    };
     unordered_map <string, string> symbolMap = { // sim name to to sim val- in var
             {"airspeed-indicator_indicated-speed-kt" , "/instrumentation/airspeed-indicator/indicated-speed-kt"},
             {"time_warp" , "/sim/time/warp"},
@@ -138,7 +174,7 @@ class SymbolTable {
     };
 
    unordered_map <string, Variable*> map;
-void insertToMap() {
+void insertToMap(unordered_map <string, Variable*> map) {
     Variable *airspeed_indicator_indicated_speed_kt = new Variable(
             "/instrumentation/airspeed-indicator/indicated-speed-kt");
     map["airspeed_indicator_indicated_speed_kt"] = airspeed_indicator_indicated_speed_kt;
@@ -218,7 +254,17 @@ void insertToMap() {
     map["switches_master_alt"] = switches_master_alt;
     Variable *engine_rpm = new Variable("/engines/engine/rpm");
     map["engine_rpm"] = engine_rpm;
-}
+
     };
+
+// add the values from the simulator to the array
+void addValuesFromSimToSymbolTable(vector<double> splitValues, string simArr[]){
+    for(int i= 0; i< splitValues.size(); i++)
+    {
+            this->map[simArr[i]] = new Variable(simArr[i], splitValues[i], 0);
+    }
+}
+
+}
 
 #endif //FLIGHTSIMULATOR_SYMBOLTABLE_H

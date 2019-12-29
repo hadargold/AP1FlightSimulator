@@ -41,7 +41,11 @@ double Variable::calculate() {
     return this->value;
 }
 
-Variable::Variable(string name, double value, int direction) : name(std::move(name)), value(value) {}
+Variable::Variable(string name, double value, int direction) {
+    this->nameAccordingToSim = name;
+    this->value = value;
+    this->direction = direction;
+}
 
 Variable::~Variable() = default;
 
