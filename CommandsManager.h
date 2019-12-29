@@ -13,10 +13,10 @@ using namespace std;
 class CommandsManager {
 private:
     map <string , Command*> stringToCommand;
-    map <string , int> commandToNumOfParameters;
-public:
-    CommandsManager(const map<string, Command *> &stringToCommand);
 
+public:
+    map <string , int> commandToNumOfParameters; // was in private
+    CommandsManager(const map<string, Command *> &stringToCommand);
     Command* commandsFactory(const string lexer,int i,int numOfParameters);
     void createCommandsAndNumOfParameters();
     bool isCommand(const string &stringRepresentACommand);

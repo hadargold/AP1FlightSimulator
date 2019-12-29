@@ -6,6 +6,7 @@
 #include "PrintCommand.h"
 #include "UpdateValCommand.h"
 #include "OpenServerCommand.h"
+#include "ex1.h"
 
 using namespace std;
 
@@ -37,7 +38,7 @@ Command* commandsFactory(const string lexer ,int i) {
     } else if (lexer[i].compare("if")) {
 
     } else if (lexer[i].compare("var")) {
-        return new Var(lexer[i+1], lexer[i+2], lexer[i+3]);
+        return new Variable(lexer[i+1], lexer[i+2], lexer[i+3]);
     }else if (lexer[i].compare("openDataServer")) {
         return new OpenServerCommand(lexer[i+1]);
     }else if (lexer[i].compare("connectControlClient")) {
