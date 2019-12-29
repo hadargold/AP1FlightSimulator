@@ -1,5 +1,5 @@
 //
-// Created by hadar on 12/26/19.
+// Created by yuval on 12/26/19.
 //
 
 #ifndef FLIGHTSIMULATOR_SYMBOLTABLE_H
