@@ -14,9 +14,8 @@ using namespace std;
 class CommandsManager {
 private:
     map <string , Command*> stringToCommand;
-
+    //map <string , int> commandToNumOfParameters; // was in private
 public:
-    map <string , int> commandToNumOfParameters; // was in private
     explicit CommandsManager(const map<string, Command *> &stringToCommand);
     Command* commandsFactory(vector <string> lexer ,int i);
     //void createCommandsAndNumOfParameters();

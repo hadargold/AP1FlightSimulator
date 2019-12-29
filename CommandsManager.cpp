@@ -12,6 +12,10 @@
 
 using namespace std;
 
+CommandsManager::CommandsManager(const map<string, &stringToCommand){
+
+} : stringToCommand(stringToCommand) {}
+
 // return true if there is a command represented by the string
 bool CommandsManager::isCommand(const string &stringRepresentACommand) {
     // was map<string, command*  > !!!!!!!!
@@ -60,4 +64,4 @@ Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
 //
 //}
 
-CommandsManager::CommandsManager(const map<string, &stringToCommand) : stringToCommand(stringToCommand) {}
+
