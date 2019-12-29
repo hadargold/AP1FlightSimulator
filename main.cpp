@@ -85,8 +85,16 @@ int main(){
 
 //yuval:
     CommandsManager *commandsManager = new CommandsManager();
-    Parser *parser = new Parser();
-    parser->parse(commandsManager,lexerVec);
+//    Parser *parser = new Parser();
+//    parser->parse(commandsManager,lexerVec);
+
+// test openDataServer:
+    vector <string> lexerForTest;
+    lexerForTest.push_back("openDataServer");
+    lexerForTest.push_back("5400");
+    int i = 0;
+    Command *c = commandsManager -> commandsFactory(lexerVec, i);
+    c->execute(&i);
 
 
 

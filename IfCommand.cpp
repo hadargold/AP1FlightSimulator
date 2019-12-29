@@ -24,7 +24,8 @@ void IfCommand::doCommand(vector<string> &text) {
         it++;
     }
     // check the condition
-    CommandsManager cmdMgr = new CommandsManager();
+    CommandsManager *cmdMgr = new CommandsManager();
+    vector <Command*> cmdVec;
     Condition *cond = new Condition(conditionVec);
     cond->execute(0);
     if(cond->getResult())
@@ -32,12 +33,9 @@ void IfCommand::doCommand(vector<string> &text) {
         //do commandVec
         for(auto i = 0; i< commandsVec.size(); i++)
         {
-            commandsVec[i].
+            cmdVec.push_back(cmdMgr->commandsFactory(commandsVec, i));
         }
     }
-
-
-
 
     it++;
 }

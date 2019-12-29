@@ -87,8 +87,10 @@ void* ConnectCommand::createConnect(void* arguments) {
         if (!valuesToSend.empty()) {
             std::pair<std::string, double> nameAccordingToClientAndValue = valuesToSend.front();
             valuesToSend.pop();
-            string NameOfVarBySimulator = getNameOfVarBySimulator(nameAccordingToClientAndValue.first);
-            string message = "set " + NameOfVarBySimulator + " " + to_string(nameAccordingToClientAndValue.second) + "\r\n";
+            string nameOfVarBySimulator = getNameOfVarBySimulator(nameAccordingToClientAndValue.first);
+            // remove the sim" from beginning and " from end
+            nameOfVarBySimulator = nameOfVarBySimulator.substr(4,nameOfVarBySimulator.length()-2);
+            string message = "set " + nameOfVarBySimulator + " " + to_string(nameAccordingToClientAndValue.second) + "\r\n";
             write(client_socket, message.c_str(), message.length());
         }
     }

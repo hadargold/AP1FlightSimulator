@@ -50,10 +50,10 @@ void Lexer::rearrangeVec(){
     for (auto i = this->m_vec.begin(); i != this->m_vec.end(); ++i) {
         if (((this->m_vec[j] == "-") && (this->m_vec[j + 1] == ">"))
             || ((this->m_vec[j] == "<") && (this->m_vec[j + 1] == "-"))
-               || ((this->m_vec[j] == "+") && (this->m_vec[j + 1] == "="))
-                  || ((this->m_vec[j] == "-") && (this->m_vec[j + 1] == "="))
-                     || ((this->m_vec[j] == "*") && (this->m_vec[j + 1] == "="))
-                        || ((this->m_vec[j] == "/") && (this->m_vec[j + 1] == "="))){
+            || ((this->m_vec[j] == "+") && (this->m_vec[j + 1] == "="))
+            || ((this->m_vec[j] == "-") && (this->m_vec[j + 1] == "="))
+            || ((this->m_vec[j] == "*") && (this->m_vec[j + 1] == "="))
+            || ((this->m_vec[j] == "/") && (this->m_vec[j + 1] == "="))){
             this->m_vec[j] = this->m_vec[j] + this->m_vec[j+1];
             this->m_vec.erase(i+1);
         }
@@ -65,7 +65,7 @@ void Lexer::rearrangeVec(){
             this->m_vec.erase(i+1);
         }
         if (this->m_vec[j] == "+" || this->m_vec[j] == "-" || this->m_vec[j] == "*" ||
-                this->m_vec[j] == "/"){
+            this->m_vec[j] == "/"){
             this->m_vec[j] = this->m_vec[j-1] + this->m_vec[j] + this->m_vec[j+1];
             this->m_vec.erase(i+1);
             this->m_vec.erase(i-1);
@@ -91,8 +91,29 @@ void Lexer::rearrangeVec(){
         }
         j++;
     }
-
+    j = 0;
+    for (auto i = this->m_vec.begin(); i != this->m_vec.end(); ++i) {
+        if (this->m_vec[j]== "-" && this->m_vec[j]!= "=" && this->m_vec[j]!= "-"){
+            this->m_vec[j] += this->m_vec[j+1];
+            this->m_vec.erase(i+1);
+            j++;
+        }
+    }
+    //should fix the expre - 2+8/4.....
+    j=0;
+    string expToPush = "";
+    for(auto i = this->m_vec.begin(); i != this->m_vec.end(); ++i) {
+        if (this->m_vec[j]== "=") {
+            while (this->m_vec[j+1] != "\n") {
+                this->m_vec[j] += this->m_vec[j+1];
+                this->m_vec.erase(i+1);
+                j++;
+            }
+        }
+    }
 }
+
+
 
 void Lexer::lexStr(string &str){
     getSpace(str);
@@ -222,4 +243,3 @@ vector<string> Lexer:: lexer(string fileName) {
     rearrangeVec();
     return this->m_vec;
 }
-
