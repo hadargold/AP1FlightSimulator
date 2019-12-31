@@ -257,7 +257,7 @@ private:
     "/engines/engine/rpm" };
 
 public:
-    unordered_map<string, Variable*> getMap() {
+    unordered_map<string, Variable*>& getMap() {
         return this->map;
     }
 

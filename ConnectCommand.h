@@ -8,13 +8,14 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
 
 class ConnectCommand: public Command{
 private:
-     char *ip;
+     string ip;
      int port;
 public:
-    ConnectCommand(const char *ip, std::string  port);
+    ConnectCommand(string ip, std::string  port);
     void execute(int* index) override;
     static void* createConnect(void* parameters);
 };

@@ -1,6 +1,4 @@
 #include "Lexer.h"
-#include <sstream>
-#include <iterator>
 
 // translate the file to the string
 vector<string> Lexer::lexerToTextFile(const string &lexer) {
@@ -159,15 +157,49 @@ vector<string> Lexer::splitLine(const string &line) {
             vstrings[j] = vstrings[j] + vstrings[j+1];
             vstrings.erase(i+1);
         }
-        if(vstrings[j] == "print"){ // Print !!!!!
-            while (vstrings[j] != ")")
+
+        if(regex_match(vstrings[j],regex("\".*")) && !regex_match(vstrings[j],regex(".*\""))){
+
+            j++;
+            while(!regex_match(vstrings[j],regex(".*\"")))
             {
-                if(vstrings[j] == "(")
-                    j++;
-                vstrings[j] = vstrings[j] + vstrings[j+1];
+                vstrings[j-1] = vstrings[j-1] + " " + vstrings[j];
                 vstrings.erase(i+1);
             }
+            vstrings[j-1] = vstrings[j-1] + " " + vstrings[j];
+            vstrings.erase(i+1);
+            j--;
+
         }
+        if(regex_match(vstrings[j],regex("\".*")) && regex_match(vstrings[j],regex(".*\""))){
+            vstrings[j] = vstrings[j].substr(1,vstrings[j].length()-2);
+        }
+//        int count = 0;
+//        int savedJ = j+1;
+//        string toPrint = "";
+//        if(vstrings[j] == "Print"){ // Print !!!!!
+//            j++;
+//            while (vstrings[j] != ")"){
+//                //cout<<"here"<<endl;
+//                if(vstrings[j] != "(") {
+//                    toPrint += vstrings[j] + " ";
+//                    j++;
+//                }
+//                else
+//                    j++;
+//                count ++;
+//            }
+//            vstrings[savedJ] = toPrint;
+//            int k = 0;
+//            for (auto i = vstrings.begin(); i != vstrings.end(); ++i)
+//            {
+//                if(k >= savedJ && k<= count){
+//                    vstrings.erase(i+1);
+//                    //cout<<"ifs"<<endl;
+//                }
+//                k++;
+//            }
+//        }
         if(vstrings[j+1] == "(" || vstrings[j+1] == ")" || vstrings[j+1] == ","){
             vstrings.erase(i+1);
         }

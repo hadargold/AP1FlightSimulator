@@ -8,17 +8,19 @@
 #include "unordered_map"
 #include "Command.h"
 #include "ex1.h"
-
+#include "SymbolTable.h"
 using namespace std;
 
 class CommandsManager {
 private:
     vector <string > namesOfCommands;
     map <string , Command*> stringToCommand;
+    SymbolTable *symbolTable;
     //map <string , int> commandToNumOfParameters; // was in private
 public:
     CommandsManager() {
         namesOfCommands = {"while", "if", "var","openDataServer","connectControlClient", "Sleep", "Print"};
+        this->symbolTable = new SymbolTable();
     }
     explicit CommandsManager(const map<string, Command *> &stringToCommand);
     Command* commandsFactory(vector <string> lexer ,int i);

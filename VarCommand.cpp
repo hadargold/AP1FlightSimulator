@@ -19,8 +19,10 @@
 
 using namespace std;
 
-VarCommand :: VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim) {
+VarCommand :: VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim,
+        SymbolTable* symbolTable) {
     enum  directions {RIGHT, LEFT};
+    //nameAccordingToSim = nameAccordingToSim.substr(1, nameAccordingToSim.length()-2);
     this->nameAccordingToClient = nameAccordingToClient;
     this->nameAccordingToSim = nameAccordingToSim;
     if (direction.compare("->") == 0) {
@@ -28,14 +30,14 @@ VarCommand :: VarCommand(string nameAccordingToClient, string direction, string 
     } else if (direction.compare("<-") == 0) {
         this->direction = LEFT;
     }
+    this->symbolTable = symbolTable;
 }
 
 void VarCommand:: execute(int* index) {
-    SymbolTable *symbolTable  = new SymbolTable();
-    unordered_map<string,Variable*> nameOfVarToVariableMap = symbolTable->getMap();
     // create the Variable
     const double defaultVal = 0;
+    unordered_map<string,Variable*> &nameOfVarToVariableMap = this->symbolTable->getMap();
     Variable *newVar = new Variable(nameAccordingToSim, defaultVal, direction);
     nameOfVarToVariableMap.insert(pair<string,Variable*>(nameAccordingToClient,newVar));
-    *index += 3;
+    *index += 4;
 }

@@ -12,11 +12,13 @@ using namespace std;
 
 class VarCommand :public Command {
 private:
+    SymbolTable *symbolTable;
+
     string nameAccordingToClient;
     int direction;
     string nameAccordingToSim;
 public:
-    VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim);
+    VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim, SymbolTable* symbolTable);
     void execute(int* index);
 };
 

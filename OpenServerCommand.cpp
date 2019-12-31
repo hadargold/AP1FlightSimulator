@@ -80,8 +80,7 @@ void OpenServerCommand:: execute(int* index) {
         exit(1);
     }
 
-
-    string dataStr;
+    *index +=1;
 }
 
 

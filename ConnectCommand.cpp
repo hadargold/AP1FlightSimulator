@@ -20,8 +20,9 @@ using namespace std;
 
 string getNameOfVarBySimulator(string nameAccordingToClientAndValue);
 
-ConnectCommand :: ConnectCommand(const char *ip, string  port) {
-    this->ip = (char*) ip;
+ConnectCommand :: ConnectCommand(string ip, string  port) {
+    //ip = ip.substr(1, ip.length()-2);
+    this->ip = ip;
     // change the port to int
     auto *stringToInterpretForPort= new Interpreter();
     SymbolTable *symbolTable = new SymbolTable();
@@ -48,11 +49,12 @@ void ConnectCommand:: execute(int* index) {
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address{}; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr(this->ip);  //the localhost address
+    // need to be changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //address.sin_addr.s_addr = inet_addr((this->ip).c_str());
+    address.sin_addr.s_addr = inet_addr("192.168.126.1");  //the localhost address
     address.sin_port = htons(this->port);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.
-
     // Requesting a connection with the server on local host with port 8081
     int is_connect = connect(client_socket, (struct sockaddr *)&address, sizeof(address));
     if (is_connect == -1) {
@@ -100,7 +102,7 @@ void* ConnectCommand::createConnect(void* arguments) {
 string getNameOfVarBySimulator(const string nameAccordingToClientAndValue) {
     auto *symbolTable = new SymbolTable();
     unordered_map<string, Variable*> nameToVariableMap = symbolTable->getMap();
-    Variable *var = nameToVariableMap[nameAccordingToClientAndValue];
+    Variable *var = (nameToVariableMap)[nameAccordingToClientAndValue];
     return var->getName();
 }
 
