@@ -18,7 +18,7 @@ private:
     //map <string , int> commandToNumOfParameters; // was in private
 public:
     CommandsManager() {
-        namesOfCommands = {"while", "if", "var","openDataServer","connectControlClient", "sleep", "print"};
+        namesOfCommands = {"while", "if", "var","openDataServer","connectControlClient", "Sleep", "Print"};
     }
     explicit CommandsManager(const map<string, Command *> &stringToCommand);
     Command* commandsFactory(vector <string> lexer ,int i);
