@@ -10,6 +10,5 @@ public:
     virtual void execute(int* index) = 0;
     virtual ~Command()= default;;
 };
-try
 
 #endif //EX3_COMMAND_H
