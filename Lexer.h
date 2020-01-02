@@ -1,40 +1,39 @@
-#ifndef UNTITLED8_LEXER_H
-#define UNTITLED8_LEXER_H
-
-#define SPACE " "
+#ifndef PROJECT_LEXER_H
+#define PROJECT_LEXER_H
+using namespace std;
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <regex>
+#include "Parser.h"
 
 #define ONE_CHAR_OPERATOR {"+","-","*","/", "\"","<",">","<=",">=","==","=","->","<-","(", ")"}
 #define TWO_CHAR_OPERATOR {"+=","-=","*=","/=","==","->","<-"}
 
+class Lexer {
 
-#include <vector>
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <regex>
-
-using namespace std;
-
-class Lexer{
-    // vector<string> m_vec;
-    string parseApostrophes(string word);
-    void lexStr(string &str);
-    void getSpace(string &str);
-    void rearrangeVec(vector<string> m_vec);
-    void spacer(string &st);
-    vector<string> splitLine(const string &line);
-    bool ifNumber(char ch);
-    bool isLeftParentheses(char parentheses);
-    bool isOperator(char operation);
-    bool isRightParentheses(char parnthese);
 public:
-    Lexer(){}
-    vector<string> lexer(string fileName);
-
+    // get the lines from the file.
     vector<string> lexerToTextFile(const string &lexer);
+    // split by " " and string.
+    vector<string> splitLine(const string& line);
+    vector<string> rearrangeVec(vector<string> vstrings);
+    // function that split all the string by " ".
+    void spacer(string &after);
+    // if it's number
+    bool ifNumber(char number);
+    // if it's '('
+    bool isLeftParentheses(char parentheses);
+    // if it's ')'
+    bool isRightParentheses(char parnthese);
+    // if it's operator.
+    bool isOperator(char operation);
+
+    bool isSavedWord(string word);
+
+    bool isStrOp(string operation);
 };
 
+#endif //PROJECT_LEXER_H
 
-
-
-#endif //UNTITLED8_LEXER_H

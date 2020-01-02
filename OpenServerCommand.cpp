@@ -80,7 +80,7 @@ void OpenServerCommand:: execute(int* index) {
         exit(1);
     }
 
-    *index +=1;
+    *index +=3;
 }
 
 

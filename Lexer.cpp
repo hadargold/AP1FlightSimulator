@@ -19,9 +19,14 @@ vector<string> Lexer::lexerToTextFile(const string &lexer) {
     string lineFromText ="";
     while (getline(file, lineFromText)) {
         // if it's not empty
-        if (allFile != "")
+        if(regex_match(lineFromText,regex("="))) {
+            allFile.append(lineFromText.substr(0, 1) + ",");
+            allFile.append(lineFromText.substr(1, lineFromText.length()-1));
+        }
+        if (allFile != "") {
             // adding space and the string
             allFile.append(" ");
+        }
         allFile.append(lineFromText);
     }
     // after put all the file on the string, we now using spacer to split the whole string , that every symbol will be
@@ -77,6 +82,14 @@ bool Lexer::isOperator(char operation) {
         default:
             return false;
     }
+}
+// same only for string
+bool Lexer::isStrOp(string op) {
+    if(op == "+" || op == "-" || op == "*" || op == "/" ||
+       op == "==" || op == "!=")
+        return true;
+    else
+        return false;
 }
 // if it's right parenthese
 bool Lexer::isRightParentheses(char parnthese) {
@@ -145,7 +158,6 @@ vector<string> Lexer::splitLine(const string &line) {
     istream_iterator<string> begin(splitter);
     istream_iterator<string> end;
     vector<string> vstrings(begin, end);
-    //vector<string> finalVec = rearrangeVec(vstrings);
     int j = 0;
     for (auto i = vstrings.begin(); i != vstrings.end(); ++i) {
         if (((vstrings[j] == "-") && (vstrings[j + 1] == ">"))
@@ -153,11 +165,12 @@ vector<string> Lexer::splitLine(const string &line) {
             || ((vstrings[j] == "+") && (vstrings[j + 1] == "="))
             || ((vstrings[j] == "-") && (vstrings[j + 1] == "="))
             || ((vstrings[j] == "*") && (vstrings[j + 1] == "="))
-            || ((vstrings[j] == "/") && (vstrings[j + 1] == "="))){
+            || ((vstrings[j] == "/") && (vstrings[j + 1] == "="))
+            || ((vstrings[j] == "<") && (vstrings[j + 1] == "="))
+            || ((vstrings[j] == ">") && (vstrings[j + 1] == "="))){
             vstrings[j] = vstrings[j] + vstrings[j+1];
             vstrings.erase(i+1);
         }
-
         if(regex_match(vstrings[j],regex("\".*")) && !regex_match(vstrings[j],regex(".*\""))){
 
             j++;
@@ -169,38 +182,25 @@ vector<string> Lexer::splitLine(const string &line) {
             vstrings[j-1] = vstrings[j-1] + " " + vstrings[j];
             vstrings.erase(i+1);
             j--;
+        }
 
+        if(vstrings[j-1] == "="){
+            // deal with ()
+            j++;
+            bool flag = false;
+            while(((isStrOp(vstrings[j])) && !isStrOp(vstrings[j+1])) ||
+                  ((isStrOp(vstrings[j+1])) && !isStrOp(vstrings[j])))
+            {
+                vstrings[j-1] = vstrings[j-1] + vstrings[j];
+                vstrings.erase(i+1);
+                flag = true;
+            }
+            if(flag){
+                vstrings[j - 1] = vstrings[j - 1] + vstrings[j];
+                vstrings.erase(i + 1); }
+            j--;
         }
-        if(regex_match(vstrings[j],regex("\".*")) && regex_match(vstrings[j],regex(".*\""))){
-            vstrings[j] = vstrings[j].substr(1,vstrings[j].length()-2);
-        }
-//        int count = 0;
-//        int savedJ = j+1;
-//        string toPrint = "";
-//        if(vstrings[j] == "Print"){ // Print !!!!!
-//            j++;
-//            while (vstrings[j] != ")"){
-//                //cout<<"here"<<endl;
-//                if(vstrings[j] != "(") {
-//                    toPrint += vstrings[j] + " ";
-//                    j++;
-//                }
-//                else
-//                    j++;
-//                count ++;
-//            }
-//            vstrings[savedJ] = toPrint;
-//            int k = 0;
-//            for (auto i = vstrings.begin(); i != vstrings.end(); ++i)
-//            {
-//                if(k >= savedJ && k<= count){
-//                    vstrings.erase(i+1);
-//                    //cout<<"ifs"<<endl;
-//                }
-//                k++;
-//            }
-//        }
-        if(vstrings[j+1] == "(" || vstrings[j+1] == ")" || vstrings[j+1] == ","){
+        if(vstrings[j+1] == ","){ // there is ,
             vstrings.erase(i+1);
         }
         j++;
@@ -209,73 +209,3 @@ vector<string> Lexer::splitLine(const string &line) {
         std::cout << *i + ','<< ' ';
     return vstrings;
 }
-
-//vector<string> Lexer::rearrangeVec(vector<string> m_vec) {
-//    int j = 0;
-//    vector<string> one_char_operators = ONE_CHAR_OPERATOR;
-//    for (auto i = m_vec.begin(); i != m_vec.end(); ++i) {
-//        if (((m_vec[j] == "-") && (m_vec[j + 1] == ">"))
-//            || ((m_vec[j] == "<") && (m_vec[j + 1] == "-"))
-//            || ((m_vec[j] == "+") && (m_vec[j + 1] == "="))
-//            || ((m_vec[j] == "-") && (m_vec[j + 1] == "="))
-//            || ((m_vec[j] == "*") && (m_vec[j + 1] == "="))
-//            || ((m_vec[j] == "/") && (m_vec[j + 1] == "="))){
-//            m_vec[j] = m_vec[j] + m_vec[j+1];
-//            m_vec.erase(i+1);
-//        }
-//        if (m_vec[j] == "sim"){
-//            if(m_vec[j+1] == "("){
-//                m_vec.erase(i+1);
-//            }
-//            m_vec[j] = m_vec[j] + '"' + m_vec[j+1] + '"';
-//            m_vec.erase(i+1);
-//        }
-//        if (m_vec[j] == "+" || m_vec[j] == "-" || m_vec[j] == "*" ||
-//            m_vec[j] == "/"){
-//            m_vec[j] = m_vec[j-1] + m_vec[j] + m_vec[j+1];
-//            m_vec.erase(i+1);
-//            m_vec.erase(i-1);
-//        }
-//check print
-//        bool flag = true;
-//        string toPrint = "";
-//        if (m_vec[j] == "print"){
-//            while(flag){
-//                string str = m_vec[j+2];
-//                int saveJ = j+1;
-//                if(str[str.length()] == '"'){
-//                    m_vec[j+2] = str.substr(0,str.length()-1);
-//                    m_vec[j+1] += m_vec[j+2];
-//                    flag = false;
-//                    m_vec.erase(i+2);
-//                    i++;
-//                }
-//            }
-//        }
-//        if (m_vec[j] == "(" || m_vec[j] == ")"){
-//            m_vec.erase(i);
-//        }
-//        j++;
-//    }
-//    j = 0;
-//    for (auto i = m_vec.begin(); i != m_vec.end(); ++i) {
-//        if (m_vec[j]== "-" && m_vec[j]!= "=" && m_vec[j]!= "-"){
-//            m_vec[j] += m_vec[j+1];
-//            m_vec.erase(i+1);
-//            j++;
-//        }
-//    }
-//    //should fix the expre - 2+8/4.....
-//    j=0;
-//    string expToPush = "";
-//    for(auto i = m_vec.begin(); i != m_vec.end(); ++i) {
-//        if (m_vec[j]== "=") {
-//            while (m_vec[j+1] != "\n") {
-//                m_vec[j] += m_vec[j+1];
-//                m_vec.erase(i+1);
-//                j++;
-//            }
-//        }
-//    }
-//    return m_vec;
-//}

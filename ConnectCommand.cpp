@@ -71,7 +71,7 @@ void ConnectCommand:: execute(int* index) {
     parametersToConnect->clientSocket = client_socket;
     pthread_t thread;
     pthread_create(&thread, nullptr, ConnectCommand::createConnect , parametersToConnect);
-    *index += 2;
+    *index += 5;
 }
 
 
