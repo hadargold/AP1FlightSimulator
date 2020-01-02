@@ -44,7 +44,7 @@ Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
 //
 //    } else
     if (lexer[i].compare("if") == 0) {
-        return new IfCommand(lexer[i+1], lexer[i+2], lexer[i+=3], i, lexer);
+        //return new IfCommand(lexer[i+1], lexer[i+2], lexer[i+=3], i, lexer);
     } else if (lexer[i].compare("var") == 0) {
         return new VarCommand(lexer[i+1], lexer[i+2],lexer[i+5], this->symbolTable);
     }else if (lexer[i].compare("openDataServer") == 0) {

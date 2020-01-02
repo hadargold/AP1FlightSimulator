@@ -95,45 +95,46 @@ private:
             {"switches_master-alt",                          "controls/switches/master-alt"},
             {"engine_rpm",                                   "engines/engine/rpm"}
     };
-//    unordered_map <string, string> simToVal = { // sim path to client name
-//            {"/instrumentation/airspeed-indicator/indicated-speed-kt", "airspeed"},
-//            {"/sim/time/warp","warp"},
-//            {"controls/switches/magnetos","magnetos"},
-//            {"instrumentation/heading-indicator/offset-deg",""},
-//            {"instrumentation/altimeter/indicated-altitude-ft","alt"}, //
-//            {"instrumentation/altimeter/pressure-alt-ft",""},
-//            {"instrumentation/attitude-indicator/indicated-pitch-deg",""},
-//            {"instrumentation/attitude-indicator/indicated-roll-deg",""},
-//            {"instrumentation/attitude-indicator/internal-pitch-deg",""},
-//            {"instrumentation/attitude-indicator/internal-roll-deg",""},
-//            {"instrumentation/encoder/indicated-altitude-ft",""},
-//            {"instrumentation/encoder/pressure-alt-ft",""},
-//            {"instrumentation/gps/indicated-altitude-ft",""},
-//            {"instrumentation/gps/indicated-ground-speed-kt",""},
-//            {"instrumentation/gps/indicated-vertical-speed",""},
-//            {"instrumentation/heading-indicator/indicated-heading-deg",""},
-//            {"instrumentation/magnetic-compass/indicated-heading-deg",""},
-//            {"instrumentation/slip-skid-ball/indicated-slip-skid",""},
-//            {"instrumentation/turn-indicator/indicated-turn-rate",""},
-//            {"instrumentation/vertical-speed-indicator/indicated-speed-fpm",""},
-//            {"controls/flight/aileron","aileron"}, //
-//            {"controls/flight/elevator","elevator"}, //
-//            {"controls/flight/rudder",""},
-//            {"controls/flight/flaps",""},
-//            {"controls/engines/engine/throttle",""},
-//            {"controls/engines/current-engine/throttle","throttle"}, //
-//            {"controls/switches/master-avionics",""},
-//            {"controls/switches/starter",""},
-//            {"engines/active-engine/auto-start",""},
-//            {"controls/flight/speedbrake",""},
-//            {"sim/model/c172p/brake-parking",""},
-//            {"controls/engines/engine/primer",""},
-//            {"controls/engines/current-engine/mixture",""},
-//            {"controls/switches/master-bat",""},
-//            {"controls/switches/master-alt",""},
-//            {"engines/engine/rpm","rpm"} //
 
-//    };
+    unordered_map <string, string> simToVal = { // sim path to client name
+            {"/instrumentation/airspeed-indicator/indicated-speed-kt", "airspeed"},
+            {"/sim/time/warp","warp"},
+            {"controls/switches/magnetos","magnetos"},
+            {"instrumentation/heading-indicator/offset-deg",""},
+            {"instrumentation/altimeter/indicated-altitude-ft","alt"}, //
+            {"instrumentation/altimeter/pressure-alt-ft",""},
+            {"instrumentation/attitude-indicator/indicated-pitch-deg",""},
+            {"instrumentation/attitude-indicator/indicated-roll-deg",""},
+            {"instrumentation/attitude-indicator/internal-pitch-deg",""},
+            {"instrumentation/attitude-indicator/internal-roll-deg",""},
+            {"instrumentation/encoder/indicated-altitude-ft",""},
+            {"instrumentation/encoder/pressure-alt-ft",""},
+            {"instrumentation/gps/indicated-altitude-ft",""},
+            {"instrumentation/gps/indicated-ground-speed-kt",""},
+            {"instrumentation/gps/indicated-vertical-speed",""},
+            {"instrumentation/heading-indicator/indicated-heading-deg",""},
+            {"instrumentation/magnetic-compass/indicated-heading-deg",""},
+            {"instrumentation/slip-skid-ball/indicated-slip-skid",""},
+            {"instrumentation/turn-indicator/indicated-turn-rate",""},
+            {"instrumentation/vertical-speed-indicator/indicated-speed-fpm",""},
+            {"controls/flight/aileron","aileron"}, //
+            {"controls/flight/elevator","elevator"}, //
+            {"controls/flight/rudder",""},
+            {"controls/flight/flaps",""},
+            {"controls/engines/engine/throttle",""},
+            {"controls/engines/current-engine/throttle","throttle"}, //
+            {"controls/switches/master-avionics",""},
+            {"controls/switches/starter",""},
+            {"engines/active-engine/auto-start",""},
+            {"controls/flight/speedbrake",""},
+            {"sim/model/c172p/brake-parking",""},
+            {"controls/engines/engine/primer",""},
+            {"controls/engines/current-engine/mixture",""},
+            {"controls/switches/master-bat",""},
+            {"controls/switches/master-alt",""},
+            {"engines/engine/rpm","rpm"} //
+
+    };
 
 //unordered_map <string, Variable*> map;
 
@@ -264,8 +265,14 @@ public:
     void addValuesFromSimToSymbolTable(vector<string> splitValues) {
         //std::string::size_type sz;     // alias of size_t
         for (int i = 0; i < splitValues.size(); i++) {
-            //double splVal = std::stod (splitValues[i],&sz);
-            this->map[simArr[i]] = new Variable(simArr[i], atof(splitValues[i].c_str()), 0);
+
+            // if the direction is left - update the map
+            unordered_map<string,Variable*>::iterator it = this->map.find(simToVal[simArr[i]]);
+            if (it != this->map.end()) {
+                if (it->second->getDirection() == 1) {
+                    this->map[simToVal[simArr[i]]]->setValue(atof(splitValues[i].c_str()));
+                }
+            }
         }
     }
 };
