@@ -8,11 +8,11 @@
 #include "SymbolTable.h"
 
 
-SleepCommand :: SleepCommand(string strTime) {
+SleepCommand :: SleepCommand(string strTime, SymbolTable* symbolTable1) {
     // change the timeToSleep to int
+    this->symbolTable = symbolTable1;
     auto *stringToInterpretForPort= new Interpreter();
-    auto *symbolTable = new SymbolTable();
-    stringToInterpretForPort->setVariablesByMapOfVars(symbolTable->getMap());
+    stringToInterpretForPort->setVariablesByMapOfVars(this->symbolTable->getMap());
     Expression *expressionToPrint = stringToInterpretForPort->interpret(strTime);
     int intTime = (int) expressionToPrint->calculate();
     this->timeToSleep = intTime;

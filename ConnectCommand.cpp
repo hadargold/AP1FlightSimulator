@@ -18,15 +18,15 @@
 #include "SymbolTable.h"
 using namespace std;
 
-string getNameOfVarBySimulator(string nameAccordingToClientAndValue);
+string getNameOfVarBySimulator(string nameAccordingToClientAndValue, SymbolTable* symbolTable);
 
-ConnectCommand :: ConnectCommand(string ip, string  port) {
+ConnectCommand :: ConnectCommand(string ip, string  port, SymbolTable* symbolTable1) {
     ip = ip.substr(1, ip.length()-2);
     this->ip = ip;
+    this->symbolTable = symbolTable1;
     // change the port to int
     auto *stringToInterpretForPort= new Interpreter();
-    SymbolTable *symbolTable = new SymbolTable();
-    unordered_map<string,Variable*> nameOfVarToVariableMap = symbolTable->getMap();
+    unordered_map<string,Variable*> nameOfVarToVariableMap = this->symbolTable->getMap();
     stringToInterpretForPort->setVariablesByMapOfVars(nameOfVarToVariableMap);
     Expression *expressionToPort = stringToInterpretForPort->interpret(port);
     int intPort = (int) expressionToPort->calculate();
@@ -35,6 +35,7 @@ ConnectCommand :: ConnectCommand(string ip, string  port) {
 
 struct parameters {
     int clientSocket;
+    SymbolTable* symbolTableForConnection;
 };
 
 // main
@@ -69,6 +70,7 @@ void ConnectCommand:: execute(int* index) {
     struct parameters *parametersToConnect;
     parametersToConnect = new parameters();
     parametersToConnect->clientSocket = client_socket;
+    parametersToConnect->symbolTableForConnection = this->symbolTable;
     pthread_t thread;
     pthread_create(&thread, nullptr, ConnectCommand::createConnect , parametersToConnect);
     *index += 4;
@@ -78,29 +80,27 @@ void ConnectCommand:: execute(int* index) {
 
 void* ConnectCommand::createConnect(void* arguments) {
     struct parameters *parametersToConnect = (struct parameters *) arguments;
-    //create socket
-    // the client noe is connected to the server
-    // now the client need to send flight instructions to the server
+
     auto *updateValCommand = new UpdateValCommand();
     std::queue<std::pair<std::string, double>> valuesToSend = updateValCommand->getValuesToSend();
-    while (true) {
+    //while (true) {
         // values to send is queue of values so send to the simulator
         if (!valuesToSend.empty()) {
             std::pair<std::string, double> nameAccordingToClientAndValue = valuesToSend.front();
             valuesToSend.pop();
-            string nameOfVarBySimulator = getNameOfVarBySimulator(nameAccordingToClientAndValue.first);
+            string nameOfVarBySimulator = getNameOfVarBySimulator(nameAccordingToClientAndValue.first,
+                    parametersToConnect->symbolTableForConnection);
             // remove the sim" from beginning and " from end
             nameOfVarBySimulator = nameOfVarBySimulator.substr(4, nameOfVarBySimulator.length() - 2);
             string message =
                     "set " + nameOfVarBySimulator + " " + to_string(nameAccordingToClientAndValue.second) + "\r\n";
             write(parametersToConnect->clientSocket, message.c_str(), message.length());
         }
-    }
 }
 
 
-string getNameOfVarBySimulator(const string nameAccordingToClientAndValue) {
-    auto *symbolTable = new SymbolTable();
+
+string getNameOfVarBySimulator(const string nameAccordingToClientAndValue, SymbolTable* symbolTable) {
     unordered_map<string, Variable*> nameToVariableMap = symbolTable->getMap();
     Variable *var = (nameToVariableMap)[nameAccordingToClientAndValue];
     return var->getName();
@@ -113,6 +113,7 @@ string getNameOfVarBySimulator(const string nameAccordingToClientAndValue) {
 ////
 //// Created by hadar on 12/19/19.
 ////
+//
 //
 //#include <sys/socket.h>
 //#include <iostream>

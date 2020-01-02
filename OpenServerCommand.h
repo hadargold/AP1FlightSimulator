@@ -3,14 +3,16 @@
 
 #include <string>
 #include "Command.h"
+#include "SymbolTable.h"
 
 using namespace std;
 
 class OpenServerCommand: public Command{
 private:
+    SymbolTable* symbolTable;
     int port;
 public:
-    OpenServerCommand(string strPort);
+    OpenServerCommand(string strPort, SymbolTable* symbolTable);
     void execute(int* index);
     static void* openDataServer(void* parameters);
 };

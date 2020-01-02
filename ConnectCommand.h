@@ -7,15 +7,17 @@
 #include "Command.h"
 #include <string>
 #include <iostream>
+#include "SymbolTable.h"
 
 using namespace std;
 
 class ConnectCommand: public Command{
 private:
+    SymbolTable* symbolTable;
      string ip;
      int port;
 public:
-    ConnectCommand(string ip, std::string  port);
+    ConnectCommand(string ip, std::string  port, SymbolTable* symbolTable1);
     void execute(int* index) override;
     static void* createConnect(void* parameters);
 };

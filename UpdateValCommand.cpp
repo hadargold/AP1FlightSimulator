@@ -9,12 +9,17 @@
 void UpdateValCommand :: execute(int* index) {
     // change the value to double by shunting yard
     auto *stringToInterpretForUpdateVal = new Interpreter();
-    auto *symbolTable = new SymbolTable();
-    unordered_map<string,Variable*> nameOfVarToVariableMap = symbolTable->getMap();
+    unordered_map<string,Variable*> nameOfVarToVariableMap = this->symbolTable->getMap();
     stringToInterpretForUpdateVal->setVariablesByMapOfVars(nameOfVarToVariableMap);
     Expression *valueToUpdate = stringToInterpretForUpdateVal->interpret(value);
-
-    // add the value and the name to a queue in order to sent it to the simulator.
-    valuesToSendToTheSim.push(make_pair(this->varName, valueToUpdate->calculate()));
+    // update the value in the symbol table
+    unordered_map<string,Variable*>::iterator it = nameOfVarToVariableMap.find(this->varName);
+    if (it != nameOfVarToVariableMap.end()) {
+        it->second->setValue(valueToUpdate->calculate());
+        if (it->second->getDirection() == 0) {
+            // add the value and the name to a queue in order to sent it to the simulator if the direction is right
+            valuesToSendToTheSim.push(make_pair(this->varName, valueToUpdate->calculate()));
+        }
+    }
     *index += 2;
 }

@@ -24,6 +24,10 @@ bool CommandsManager::isCommand(const string &stringRepresentACommand) {
     }
 }
 
+SymbolTable* CommandsManager::getSymbolTable() {
+    return this->symbolTable;
+}
+
 // returns the command of the string
 Command* CommandsManager::getCommandByString(const string &stringRepresentACommand){
     return stringToCommand[stringRepresentACommand];
@@ -38,19 +42,19 @@ Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
     //enum commandsName {WHILE, IF, OPEN_DATA_SERVER ,CONNECT,VAR,SLEEP,PRINT};
 //    if (lexer[i].compare("while") == 0) {
 //
-//    } else if (lexer[i].compare("if") == 0) {
-//
 //    } else
-      if (lexer[i].compare("var") == 0) {
-        return new VarCommand(lexer[i+1], lexer[i+2], lexer[i+5], this->symbolTable);
+    if (lexer[i].compare("if") == 0) {
+        return new IfCommand(lexer[i+1], lexer[i+2], lexer[i+=3], i, lexer);
+    } else if (lexer[i].compare("var") == 0) {
+        return new VarCommand(lexer[i+1], lexer[i+2],lexer[i+5], this->symbolTable);
     }else if (lexer[i].compare("openDataServer") == 0) {
-        return new OpenServerCommand(lexer[i+2]);
+        return new OpenServerCommand(lexer[i+2], this->symbolTable);
     }else if (lexer[i].compare("connectControlClient") == 0) {
         // TODO- need to be changed. ip and port from the lexer.
         //return new ConnectCommand("127.0.0.1", "15463");
-        return new ConnectCommand(lexer[i+2], lexer[i+3]);
+        return new ConnectCommand(lexer[i+2], lexer[i+3], this->symbolTable);
     }else if (lexer[i].compare("Sleep") == 0) {
-          return new SleepCommand(lexer[i+2]);
+          return new SleepCommand(lexer[i+2], this->symbolTable);
     }else if (lexer[i].compare("Print") == 0) {
         return new PrintCommand(lexer[i+2], this->symbolTable);
     }

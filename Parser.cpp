@@ -5,9 +5,6 @@
 void Parser :: parse(CommandsManager* commandsManager, vector <string> lexer) {
     for (int i = 0; i < lexer.size(); ++i) {
         cout << "i is: " << i << " " << lexer[i] << endl;
-        if (i == 209) {
-            cout <<"here" << endl;
-        }
         // if this is command - execute it
         if (commandsManager->isCommand(lexer[i])) {
             Command *c = commandsManager -> commandsFactory(lexer, i);
@@ -15,7 +12,7 @@ void Parser :: parse(CommandsManager* commandsManager, vector <string> lexer) {
         }
             // if the command is "=" so the i is on the var name and the next index is the "="
         else if (lexer[i+1] == "=") {
-            Command *c = new UpdateValCommand(lexer[i], lexer[i+2]);
+            Command *c = new UpdateValCommand(lexer[i], lexer[i+2], commandsManager->getSymbolTable());
             c->execute(&i);
         }
     }
