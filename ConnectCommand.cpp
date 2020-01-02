@@ -21,7 +21,7 @@ using namespace std;
 string getNameOfVarBySimulator(string nameAccordingToClientAndValue);
 
 ConnectCommand :: ConnectCommand(string ip, string  port) {
-    //ip = ip.substr(1, ip.length()-2);
+    ip = ip.substr(1, ip.length()-2);
     this->ip = ip;
     // change the port to int
     auto *stringToInterpretForPort= new Interpreter();
@@ -51,7 +51,7 @@ void ConnectCommand:: execute(int* index) {
     address.sin_family = AF_INET;//IP4
     // need to be changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //address.sin_addr.s_addr = inet_addr((this->ip).c_str());
-    address.sin_addr.s_addr = inet_addr("192.168.126.1");  //the localhost address
+    address.sin_addr.s_addr = inet_addr(this->ip.c_str());  //the localhost address
     address.sin_port = htons(this->port);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.
@@ -71,7 +71,7 @@ void ConnectCommand:: execute(int* index) {
     parametersToConnect->clientSocket = client_socket;
     pthread_t thread;
     pthread_create(&thread, nullptr, ConnectCommand::createConnect , parametersToConnect);
-    *index += 5;
+    *index += 4;
 }
 
 

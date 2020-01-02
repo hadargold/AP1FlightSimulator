@@ -22,5 +22,5 @@ void SleepCommand::execute(int* index)
 {
     //from chrono
     this_thread::sleep_for(std::chrono::milliseconds((int) timeToSleep));
-    *index += 2;
+    *index += 3;
 }

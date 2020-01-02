@@ -39,5 +39,5 @@ void VarCommand:: execute(int* index) {
     unordered_map<string,Variable*> &nameOfVarToVariableMap = this->symbolTable->getMap();
     Variable *newVar = new Variable(nameAccordingToSim, defaultVal, direction);
     nameOfVarToVariableMap.insert(pair<string,Variable*>(nameAccordingToClient,newVar));
-    *index += 4;
+    *index += 6;
 }
