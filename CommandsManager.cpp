@@ -58,6 +58,9 @@ Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
     }else if (lexer[i].compare("Print") == 0) {
         return new PrintCommand(lexer[i+2], this->symbolTable);
     }
+    else if (lexer[i].compare("if") == 0) {
+        return new IfCommand(i, lexer);
+    }
 }
 
 //void CommandsManager::createCommandsAndNumOfParameters() {
