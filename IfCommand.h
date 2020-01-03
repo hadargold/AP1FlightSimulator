@@ -9,14 +9,20 @@
 #include "Condition.h"
 #include "CommandsManager.h"
 
-class IfCommand : Condition {
+//class IfCommand : public Condition{
+class IfCommand : public Command{
     //vector<string>::iterator &it;
-    vector<string> conditionVec;
+    //vector<string> conditionVec;
     int iter;
     vector <string> lex;
 public:
-    IfCommand(string a, string op, string b, int i);
+    //IfCommand(int i, vector <string> lexer);
+    explicit IfCommand(int i ,vector <string> lexer) {
+        this->iter = i;
+        this->lex = lexer; // check * !!!!!
+    }
     void doCommand(vector<string> &text);
+    void execute(int *index);
 };
 
 
