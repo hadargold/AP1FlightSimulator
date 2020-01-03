@@ -28,6 +28,7 @@ public:
     //int getNumOfParametersByString(const string &stringRepresentACommand);
     bool isCommand(const string &stringRepresentACommand);
     Command* getCommandByString(const string &stringRepresentACommand);
+    SymbolTable* getSymbolTable();
 
 };
 

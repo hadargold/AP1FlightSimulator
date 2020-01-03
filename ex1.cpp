@@ -47,6 +47,7 @@ Variable::Variable(string name, double value, int direction) {
     this->direction = direction;
 }
 
+
 Variable::~Variable() = default;
 
 

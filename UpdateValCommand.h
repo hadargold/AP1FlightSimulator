@@ -8,19 +8,22 @@
 #include <string>
 #include "Command.h"
 #include <queue>
+#include "SymbolTable.h"
 
 using namespace std;
 
 class UpdateValCommand :public Command {
 private:
+    SymbolTable *symbolTable;
     string varName;
     string value;
     std::queue<std::pair<std::string, double>> valuesToSendToTheSim ;
 public:
     UpdateValCommand() = default;
-    UpdateValCommand(string varName, string value) {
+    UpdateValCommand(string varName, string value, SymbolTable* symbolTable) {
         this->varName = varName;
         this->value = value;
+        this->symbolTable = symbolTable;
     }
     void execute(int* index);
     std::queue<std::pair<std::string, double>> getValuesToSend() {

@@ -13,7 +13,6 @@ using namespace std;
 class VarCommand :public Command {
 private:
     SymbolTable *symbolTable;
-
     string nameAccordingToClient;
     int direction;
     string nameAccordingToSim;

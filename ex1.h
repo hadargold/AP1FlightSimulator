@@ -27,6 +27,9 @@ public:
     int getDirection() {
         return direction;
     }
+    void setValue(int val) {
+        this->value = val;
+    }
     Variable& operator++();
     Variable& operator--();
     Variable& operator+=(double);
@@ -34,6 +37,7 @@ public:
     Variable & operator++(int);
     Variable & operator--(int);
     double calculate() override;
+
     ~Variable();
 
 };

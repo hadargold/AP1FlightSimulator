@@ -179,7 +179,7 @@ void Interpreter::setVariablesByMapOfVars(unordered_map<string,Variable*> nameOf
     unordered_map<string, Variable*>::iterator it;
     for (it = nameOfVarToVariableMap.begin(); it != nameOfVarToVariableMap.end(); it++)
     {
-        (this->variables)[it->first] = it->second->getValue();
+        (this->variables)[it->first] = to_string(it->second->getValue());
     }
 }
 

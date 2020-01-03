@@ -9,14 +9,19 @@
 #include <string>
 #include "Expression.h"
 #include "Command.h"
+#include "SymbolTable.h"
 
 using namespace std;
 
 class PrintCommand :public Command {
 private:
+    SymbolTable *symbolTable;
     string toPrint;
 public:
-    explicit PrintCommand(string sPrint) { this->toPrint = sPrint; }
+    explicit PrintCommand(string sPrint, SymbolTable *symbolTable) {
+        this->toPrint = sPrint;
+        this->symbolTable = symbolTable;
+    }
     void execute(int* index);
 };
 

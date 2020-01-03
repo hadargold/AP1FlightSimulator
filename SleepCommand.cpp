@@ -8,11 +8,11 @@
 #include "SymbolTable.h"
 
 
-SleepCommand :: SleepCommand(string strTime) {
+SleepCommand :: SleepCommand(string strTime, SymbolTable* symbolTable1) {
     // change the timeToSleep to int
+    this->symbolTable = symbolTable1;
     auto *stringToInterpretForPort= new Interpreter();
-    auto *symbolTable = new SymbolTable();
-    stringToInterpretForPort->setVariablesByMapOfVars(symbolTable->getMap());
+    stringToInterpretForPort->setVariablesByMapOfVars(this->symbolTable->getMap());
     Expression *expressionToPrint = stringToInterpretForPort->interpret(strTime);
     int intTime = (int) expressionToPrint->calculate();
     this->timeToSleep = intTime;
@@ -22,5 +22,5 @@ void SleepCommand::execute(int* index)
 {
     //from chrono
     this_thread::sleep_for(std::chrono::milliseconds((int) timeToSleep));
-    *index += 2;
+    *index += 3;
 }
