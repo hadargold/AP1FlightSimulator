@@ -2,104 +2,30 @@
 // Created by hadar on 12/27/19.
 //
 
-#include "IfCommand.h"
+#ifndef FLIGHTSIMULATOR_IFCOMMAND_H
+#define FLIGHTSIMULATOR_IFCOMMAND_H
 
-IfCommand::IfCommand(vector <string> lexer, int i, SymbolTable *symbolTable) {
-    this->iter = i;
-    this->lex = lexer; // check * !!!!!
-    this->symbolTable = symbolTable;
-}
+#include <string>
+#include "Condition.h"
+#include "CommandsManager.h"
+#include "UpdateValCommand.h"
 
-void IfCommand::execute(int *index) { // should get the lex
-    (*index) += 1; // first one was "if"
-    vector<string> conditionVec, commandsVec;
-    while (lex[*index] != "{") {
-        conditionVec.push_back(lex[*index]);
-        (*index)++;
-    }
-
-    // now we have all the condition
-    int breaks = 1;
-    (*index)++;
-    //it++;
-    while (breaks != 0) { //!(lex[*index] == "}" &&
-        if (lex[*index] == "{")
-            breaks++;
-        if (lex[*index] == "}")
-            breaks--;
-        if(breaks != 0)
-            commandsVec.push_back(lex[*index]);
-        (*index) +=1;
-    }
+//class IfCommand : public Condition{
+class IfCommand : public Command{
+    //vector<string>::iterator &it;
+    //vector<string> conditionVec;
+    int iter;
+    vector <string> lex;
+    SymbolTable *symbolTable;
+public:
+    IfCommand(vector <string> lexer, int i, SymbolTable *symbolTable);
+//    explicit IfCommand(int i ,vector <string> lexer) {
+//        this->iter = i;
+//        this->lex = lexer; // check * !!!!!
+//    }
+    void doCommand(vector<string> &text);
+    void execute(int *index);
+};
 
 
-    // check the condition
-    CommandsManager *cmdMgr = new CommandsManager();
-    vector <Command*> cmdVec;
-//    Condition *cond = new Condition(conditionVec);
-//    cond->execute(index);
-    bool result = false;
-    if(conditionVec.size() == 1)
-    {
-        //checkkkkkkkkkkkkkkkkkkkkkkk
-        result = (conditionVec[0] == "1") ? true : false;
-        //*index += 1;
-    }
-    else {
-        int i = 0;
-        int conditionLocation;
-        string left = conditionVec[0];
-        string right = conditionVec[2];
-        Expression *sideA, *sideB;
-
-        Interpreter *stringToInterpretForConditionLeft = new Interpreter();
-        //SymbolTable *symbolTable = new SymbolTable();
-        unordered_map<string, Variable *> nameOfVarToVariableMap = this->symbolTable->getMap();
-        stringToInterpretForConditionLeft->setVariablesByMapOfVars(nameOfVarToVariableMap);
-        Expression *expressionLeft = stringToInterpretForConditionLeft->interpret(left);
-
-        Interpreter *stringToInterpretForConditionRight = new Interpreter();
-        unordered_map<string, Variable *> nameOfVarToVariableMapR = this->symbolTable->getMap();
-        stringToInterpretForConditionLeft->setVariablesByMapOfVars(nameOfVarToVariableMap);
-        Expression *expressionRight = stringToInterpretForConditionLeft->interpret(right);
-
-        if(conditionVec[1] == ">")
-            result = expressionLeft->calculate() > expressionRight->calculate() ? true : false;
-        if(conditionVec[1] == "<")
-            result = expressionLeft->calculate() < expressionRight->calculate() ? true : false;
-        if(conditionVec[1] == "!=")
-            result = expressionLeft->calculate() != expressionRight->calculate() ? true : false;
-        if(conditionVec[1] == "==")
-            result = expressionLeft->calculate() == expressionRight->calculate() ? true : false;
-        if(conditionVec[1] == "<=")
-            result = expressionLeft->calculate() <= expressionRight->calculate() ? true : false;
-        if(conditionVec[1] == ">=")
-            result = expressionLeft->calculate() >= expressionRight->calculate() ? true : false;
-
-        //*index += 3;
-    }
-    if(result)
-    {
-        // do commandVec
-//        Parser p;
-        CommandsManager* commandsManager;
-//        p.parse(commandsManager, commandsVec);
-        for(auto i = 0; i< commandsVec.size(); ++i)
-        {
-                cout << "in if i is: " << i << " " << commandsVec[i] << endl;
-                // if this is command - execute it
-                //if (commandsManager->isCommand(commandsVec[i]))
-                if(commandsVec[i] == "Print"){
-                    cout<<"here"<<endl;
-                    Command *c = commandsManager -> commandsFactory(commandsVec, i);
-                    c->execute(&i);
-                }
-                    // if the command is "=" so the i is on the var name and the next index is the "="
-                else if (commandsVec[i+1] == "=") {
-                    Command *c = new UpdateValCommand(commandsVec[i], commandsVec[i+2], commandsManager->getSymbolTable());
-                    c->execute(&i);
-                }
-        }
-    }
-    (*index) -=1;
-}
+#endif //FLIGHTSIMULATOR_IFCOMMAND_H
