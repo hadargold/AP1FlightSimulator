@@ -4,10 +4,11 @@
 
 #include "IfCommand.h"
 
-IfCommand::IfCommand(vector <string> lexer, int i, SymbolTable *symbolTable) {
+IfCommand::IfCommand(vector <string> lexer, int i, SymbolTable *symbolTable, CommandsManager* cmdManager) {
     this->iter = i;
     this->lex = lexer; // check * !!!!!
     this->symbolTable = symbolTable;
+    this->commandsManager = cmdManager;
 }
 
 void IfCommand::execute(int *index) { // should get the lex
@@ -42,7 +43,7 @@ void IfCommand::execute(int *index) { // should get the lex
     if(conditionVec.size() == 1)
     {
         //checkkkkkkkkkkkkkkkkkkkkkkk
-        result = (conditionVec[0] == "1") ? true : false;
+        result = (conditionVec[0] == "0") ? true : false;
         //*index += 1;
     }
     else {
@@ -80,17 +81,12 @@ void IfCommand::execute(int *index) { // should get the lex
     }
     if(result)
     {
-        // do commandVec
-//        Parser p;
-        CommandsManager* commandsManager;
-//        p.parse(commandsManager, commandsVec);
         for(auto i = 0; i< commandsVec.size(); ++i)
         {
                 cout << "in if i is: " << i << " " << commandsVec[i] << endl;
                 // if this is command - execute it
-                //if (commandsManager->isCommand(commandsVec[i]))
-                if(commandsVec[i] == "Print"){
-                    cout<<"here"<<endl;
+                if (commandsManager->isCommand(commandsVec[i]))
+                {
                     Command *c = commandsManager -> commandsFactory(commandsVec, i);
                     c->execute(&i);
                 }
