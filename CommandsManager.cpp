@@ -18,7 +18,6 @@ using namespace std;
 bool CommandsManager::isCommand(const string &stringRepresentACommand) {
     if (std::find(namesOfCommands.begin(), namesOfCommands.end(),
             stringRepresentACommand) != namesOfCommands.end()) {
-        cout<<"yay"<<endl;
         return true;
     } else {
         return false;
@@ -45,9 +44,9 @@ Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
 //
 //    } else
     if (lexer[i].compare("if") == 0) {
-        return new IfCommand(lexer, i, this->symbolTable);
+        return new IfCommand(lexer, i, this->symbolTable, this);
     }else if (lexer[i].compare("while") == 0) {
-        return new WhileCommand(i, lexer);
+        return new WhileCommand(lexer, i, this->symbolTable, this);
     }else if (lexer[i].compare("var") == 0) {
         return new VarCommand(lexer[i+1], lexer[i+2],lexer[i+5], this->symbolTable);
     }else if (lexer[i].compare("openDataServer") == 0) {
