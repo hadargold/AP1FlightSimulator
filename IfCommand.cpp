@@ -4,6 +4,12 @@
 
 #include "IfCommand.h"
 
+IfCommand::IfCommand(vector <string> lexer, int i, SymbolTable *symbolTable) {
+    this->iter = i;
+    this->lex = lexer; // check * !!!!!
+    this->symbolTable = symbolTable;
+}
+
 void IfCommand::execute(int *index) { // should get the lex
     (*index) += 1; // first one was "if"
     vector<string> conditionVec, commandsVec;
@@ -45,28 +51,15 @@ void IfCommand::execute(int *index) { // should get the lex
         string left = conditionVec[0];
         string right = conditionVec[2];
         Expression *sideA, *sideB;
-        // maybe dont need it
-//        while (conditionVec[i] != "<" && conditionVec[i] != ">"
-//               && conditionVec[i] != "<=" && conditionVec[i] != ">="
-//               && conditionVec[i] != "!=" && conditionVec[i] != "==")
-//        {
-//            left += conditionVec[i];
-//            i++;
-//        }
-//        conditionLocation = i;
-//        while(i < conditionVec.size()){
-//            right += conditionVec[i];
-//        }
 
         Interpreter *stringToInterpretForConditionLeft = new Interpreter();
-        SymbolTable *symbolTable = new SymbolTable();
-        unordered_map<string, Variable *> nameOfVarToVariableMap = symbolTable->getMap();
+        //SymbolTable *symbolTable = new SymbolTable();
+        unordered_map<string, Variable *> nameOfVarToVariableMap = this->symbolTable->getMap();
         stringToInterpretForConditionLeft->setVariablesByMapOfVars(nameOfVarToVariableMap);
         Expression *expressionLeft = stringToInterpretForConditionLeft->interpret(left);
 
         Interpreter *stringToInterpretForConditionRight = new Interpreter();
-        SymbolTable *symbolTableR = new SymbolTable();
-        unordered_map<string, Variable *> nameOfVarToVariableMapR = symbolTable->getMap();
+        unordered_map<string, Variable *> nameOfVarToVariableMapR = this->symbolTable->getMap();
         stringToInterpretForConditionLeft->setVariablesByMapOfVars(nameOfVarToVariableMap);
         Expression *expressionRight = stringToInterpretForConditionLeft->interpret(right);
 
@@ -88,10 +81,24 @@ void IfCommand::execute(int *index) { // should get the lex
     if(result)
     {
         // do commandVec
-        for(auto i = 0; i< commandsVec.size(); i++)
+//        Parser p;
+        CommandsManager* commandsManager;
+//        p.parse(commandsManager, commandsVec);
+        for(auto i = 0; i< commandsVec.size(); ++i)
         {
-            //cmdVec.push_back(cmdMgr->commandsFactory(commandsVec, i));
-            cmdMgr->commandsFactory(commandsVec, i);
+                cout << "in if i is: " << i << " " << commandsVec[i] << endl;
+                // if this is command - execute it
+                //if (commandsManager->isCommand(commandsVec[i]))
+                if(commandsVec[i] == "Print"){
+                    cout<<"here"<<endl;
+                    Command *c = commandsManager -> commandsFactory(commandsVec, i);
+                    c->execute(&i);
+                }
+                    // if the command is "=" so the i is on the var name and the next index is the "="
+                else if (commandsVec[i+1] == "=") {
+                    Command *c = new UpdateValCommand(commandsVec[i], commandsVec[i+2], commandsManager->getSymbolTable());
+                    c->execute(&i);
+                }
         }
     }
     (*index) -=1;
