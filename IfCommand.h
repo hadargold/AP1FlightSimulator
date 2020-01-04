@@ -17,14 +17,16 @@ class IfCommand : public Command{
     int iter;
     vector <string> lex;
     SymbolTable *symbolTable;
+    CommandsManager* commandsManager;
 public:
-    IfCommand(vector <string> lexer, int i, SymbolTable *symbolTable);
+    IfCommand(vector <string> lexer, int i, SymbolTable *symbolTable, CommandsManager* commandsManager);
 //    explicit IfCommand(int i ,vector <string> lexer) {
 //        this->iter = i;
 //        this->lex = lexer; // check * !!!!!
 //    }
     void doCommand(vector<string> &text);
     void execute(int *index);
+
 };
 
 
