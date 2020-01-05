@@ -17,17 +17,22 @@ vector<string> Lexer::lexerToTextFile(const string &lexer) {
     }
     // get line from the file
     string lineFromText ="";
+    bool flag = false;
     while (getline(file, lineFromText)) {
         // if it's not empty
-        if(regex_match(lineFromText,regex("="))) {
-            allFile.append(lineFromText.substr(0, 1) + ",");
-            allFile.append(lineFromText.substr(1, lineFromText.length()-1));
-        }
         if (allFile != "") {
             // adding space and the string
             allFile.append(" ");
         }
-        allFile.append(lineFromText);
+        if(lineFromText.find("=")!=std::string::npos)//regex_match(lineFromText,regex("="))) {
+        { allFile.append(lineFromText);
+            allFile.append(" @ ");
+            //flag = true;
+            //allFile.append(lineFromText.substr(0, 1) + ",");
+            //string WithoutSpace = lineFromText.substr(1, lineFromText.length()-1);
+        }
+        else
+            allFile.append(lineFromText);
     }
     // after put all the file on the string, we now using spacer to split the whole string , that every symbol will be
     // in a cell on the vector
@@ -85,11 +90,11 @@ bool Lexer::isOperator(char operation) {
 }
 // same only for string
 bool Lexer::isStrOp(string op) {
-    if(op == "+" || op == "-" || op == "*" || op == "/" ||
-       op == "==" || op == "!=")
-        return true;
-    else
-        return false;
+        if(op == "+" || op == "-" || op == "*" || op == "/" ||
+                op == "==" || op == "!=")
+            return true;
+        else
+            return false;
 }
 // if it's right parenthese
 bool Lexer::isRightParentheses(char parnthese) {
@@ -134,7 +139,7 @@ void Lexer::spacer(string &st) {
         else {
             while (++i != st.length()) {
                 if (((isOperator(st[i]) || st[i] == ' ' || isRightParentheses(st[i]))
-                     || isLeftParentheses(st[i]))&& !gersh || (st[i] == '\"' && gersh)) {
+                        || isLeftParentheses(st[i]))&& !gersh || (st[i] == '\"' && gersh)) {
                     if (st[i] == '\"' && gersh) {
                         i++;
                         gersh = false;
@@ -167,45 +172,53 @@ vector<string> Lexer::splitLine(const string &line) {
             || ((vstrings[j] == "*") && (vstrings[j + 1] == "="))
             || ((vstrings[j] == "/") && (vstrings[j + 1] == "="))
             || ((vstrings[j] == "<") && (vstrings[j + 1] == "="))
-            || ((vstrings[j] == ">") && (vstrings[j + 1] == "="))){
-            vstrings[j] = vstrings[j] + vstrings[j+1];
-            vstrings.erase(i+1);
+            || ((vstrings[j] == ">") && (vstrings[j + 1] == "="))) {
+            vstrings[j] = vstrings[j] + vstrings[j + 1];
+            vstrings.erase(i + 1);
         }
-        if(regex_match(vstrings[j],regex("\".*")) && !regex_match(vstrings[j],regex(".*\""))){
+        if (regex_match(vstrings[j], regex("\".*")) && !regex_match(vstrings[j], regex(".*\""))) {
 
             j++;
-            while(!regex_match(vstrings[j],regex(".*\"")))
-            {
-                vstrings[j-1] = vstrings[j-1] + " " + vstrings[j];
-                vstrings.erase(i+1);
+            while (!regex_match(vstrings[j], regex(".*\""))) {
+                vstrings[j - 1] = vstrings[j - 1] + " " + vstrings[j];
+                vstrings.erase(i + 1);
             }
-            vstrings[j-1] = vstrings[j-1] + " " + vstrings[j];
-            vstrings.erase(i+1);
+            vstrings[j - 1] = vstrings[j - 1] + " " + vstrings[j];
+            vstrings.erase(i + 1);
             j--;
         }
 
-        if(vstrings[j-1] == "="){
-            // deal with ()
+        if (vstrings[j - 1] == "=") {
             j++;
             bool flag = false;
-            while(((isStrOp(vstrings[j])) && !isStrOp(vstrings[j+1])) ||
-                  ((isStrOp(vstrings[j+1])) && !isStrOp(vstrings[j])))
+            while (vstrings[j] != "@") //((isStrOp(vstrings[j])) && !isStrOp(vstrings[j+1])) ||
+//                  ((isStrOp(vstrings[j+1])) && !isStrOp(vstrings[j])) ||
+//                  (isStrOp(vstrings[j]) && vstrings[j+1] == "(" && !isStrOp(vstrings[j+2]))
+//                  || !(isStrOp(vstrings[j+1]) && vstrings[j+2] == ")"
+//                  && isStrOp(vstrings[j]))
+//                  )
             {
-                vstrings[j-1] = vstrings[j-1] + vstrings[j];
-                vstrings.erase(i+1);
+                vstrings[j - 1] = vstrings[j - 1] + vstrings[j];
+                vstrings.erase(i + 1);
                 flag = true;
             }
-            if(flag){
-                vstrings[j - 1] = vstrings[j - 1] + vstrings[j];
-                vstrings.erase(i + 1); }
+//            if(flag){
+//                vstrings[j - 1] = vstrings[j - 1] + vstrings[j];
+//                vstrings.erase(i + 1); }
+//                j--;
+//            }
             j--;
         }
-        if(vstrings[j+1] == ","){ // there is ,
-            vstrings.erase(i+1);
+            if (vstrings[j + 1] == "," || vstrings[j + 1] == "@") { // there is ,
+                vstrings.erase(i + 1);
+            }
+            j++;
         }
-        j++;
-    }
-    for (auto i = vstrings.begin(); i != vstrings.end(); ++i)
-        std::cout << *i + ','<< ' ';
-    return vstrings;
+        for (auto i = vstrings.begin(); i != vstrings.end(); ++i)
+            std::cout << *i + ','<< ' ';
+        return vstrings;
+
 }
+
+
+
