@@ -20,10 +20,11 @@ private:
     std::queue<std::pair<std::string, double>> valuesToSendToTheSim ;
 public:
     UpdateValCommand() = default;
-    UpdateValCommand(string varName, string value, SymbolTable* symbolTable) {
+    UpdateValCommand(string varName, string value, SymbolTable* symbolTable,queue<std::pair<std::string, double>> val) {
         this->varName = varName;
         this->value = value;
         this->symbolTable = symbolTable;
+        this->valuesToSendToTheSim = val;
     }
     void execute(int* index);
     std::queue<std::pair<std::string, double>> getValuesToSend() {

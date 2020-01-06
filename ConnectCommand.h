@@ -7,6 +7,7 @@
 #include "Command.h"
 #include <string>
 #include <iostream>
+#include <queue>
 #include "SymbolTable.h"
 
 using namespace std;
@@ -16,8 +17,10 @@ private:
     SymbolTable* symbolTable;
      string ip;
      int port;
+     std::queue<std::pair<std::string, double>> valuesToSendToTheSim ;
 public:
-    ConnectCommand(string ip, std::string  port, SymbolTable* symbolTable1);
+    ConnectCommand(string ip, std::string  port, SymbolTable* symbolTable1,
+        std::queue<std::pair<std::string, double>> valuesToSendToTheSim);
     void execute(int* index) override;
     static void* createConnect(void* parameters);
 };

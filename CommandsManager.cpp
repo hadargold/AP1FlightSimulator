@@ -54,7 +54,7 @@ Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
     }else if (lexer[i].compare("connectControlClient") == 0) {
         // TODO- need to be changed. ip and port from the lexer.
         //return new ConnectCommand("127.0.0.1", "15463");
-        return new ConnectCommand(lexer[i+2], lexer[i+3], this->symbolTable);
+        return new ConnectCommand(lexer[i+2], lexer[i+3], this->symbolTable, valuesToSendToTheSim);
     }else if (lexer[i].compare("Sleep") == 0) {
           return new SleepCommand(lexer[i+2], this->symbolTable);
     }else if (lexer[i].compare("Print") == 0) {

@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <queue>
 #include "unordered_map"
 #include "Command.h"
 #include "ex1.h"
@@ -20,6 +21,7 @@ private:
     vector <string > namesOfCommands;
     map <string , Command*> stringToCommand;
     SymbolTable *symbolTable;
+    std::queue<std::pair<std::string, double>> valuesToSendToTheSim;
 public:
     CommandsManager() {
         namesOfCommands = {"while", "if", "var","openDataServer","connectControlClient", "Sleep", "Print"};
@@ -30,6 +32,10 @@ public:
     bool isCommand(const string &stringRepresentACommand);
     Command* getCommandByString(const string &stringRepresentACommand);
     SymbolTable* getSymbolTable();
+    std::queue<std::pair<std::string, double>> getValToSend() {
+      return valuesToSendToTheSim;
+    }
+
 
 };
 

@@ -109,7 +109,7 @@ void* OpenServerCommand::openDataServer(void* arguments) {
                         mutex.try_lock();
                         parametersToOpenDataServer->symbolTableToConnect->addValuesFromSimToSymbolTable(splitValues);
                         mutex.unlock();
-                        //cout << stringOfValuesFromSim << endl;
+                        cout << stringOfValuesFromSim << endl;
                         stringOfValuesFromSim = "";
                     }
                 } else stringOfValuesFromSim += c;

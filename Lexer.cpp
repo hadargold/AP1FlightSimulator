@@ -1,257 +1,257 @@
 #include "Lexer.h"
 
 vector<string> Lexer::lexerToTextFile(string fileName) {
-    // empty string
-    string allFile = "";
-    // vector string that we will returned.
-    vector<string> lines;
-    // the file
-    fstream file;
-    // lines from the text
-    // temp string
-    string temp;
-    // if it's not open open it.
-    if (!file.is_open()) {
-        file.open(fileName, fstream::app | fstream::in);
+  // empty string
+  string allFile = "";
+  // vector string that we will returned.
+  vector<string> lines;
+  // the file
+  fstream file;
+  // lines from the text
+  // temp string
+  string temp;
+  // if it's not open open it.
+  if (!file.is_open()) {
+    file.open(fileName, fstream::app | fstream::in);
+  }
+  // get line from the file
+  string lineFromText;
+  string shirshur = "";
+  bool flag = false;
+  int index;
+  while (getline(file, lineFromText)) {
+    lineFromText = remove(lineFromText);
+    index = lineFromText.find("openDataServer");
+    if (index < lineFromText.length()) {
+      lines.push_back("openDataServer");
+      lines.push_back("(");
+      lines.push_back(lineFromText.substr(index + 15, lineFromText.length() - index - 16));
+      lines.push_back(")");
+      continue;
     }
-    // get line from the file
-    string lineFromText;
-    string shirshur = "";
-    bool flag = false;
-    int index;
-    while (getline(file, lineFromText)) {
-        lineFromText = remove(lineFromText);
-        index = lineFromText.find("openDataServer");
-        if (index < lineFromText.length()) {
-            lines.push_back("openDataServer");
-            lines.push_back("(");
-            lines.push_back(lineFromText.substr(index + 15, lineFromText.length() - index - 16));
-            lines.push_back(")");
-            continue;
-        }
-        index = lineFromText.find("connectControlClient");
-        if (index < lineFromText.length()) {
-            lines.push_back("connectControlClient");
-            lines.push_back("(");
-            string substr = lineFromText.substr(21, lineFromText.length() - 21);
-            int index2 = substr.find(",");
-            string ip = substr.substr(0, index2);
-            string port = substr.substr(index2 + 1, substr.length() - index2 - 2);
-            lines.push_back(ip);
-            lines.push_back(port);
-            lines.push_back(")");
-            continue;
-        }
-        index = lineFromText.find("Sleep");
-        if (index < lineFromText.length()) {
-            lines.push_back("Sleep");
-            lines.push_back("(");
-            string substr = lineFromText.substr(6, lineFromText.length() - 7);
-            lines.push_back(substr);
-            lines.push_back(")");
-            continue;
-        }
-        index = lineFromText.find("Print");
-        if (index < lineFromText.length()) {
-            lines.push_back("Print");
-            lines.push_back("(");
-            string substr = lineFromText.substr(6, lineFromText.length() - 7);
-            lines.push_back(substr);
-            lines.push_back(")");
-            continue;
-        }
-        index = lineFromText.find("->");
-        if (index < lineFromText.length()) {
-            lines.push_back("var");
-            string name = lineFromText.substr(3, index - 3);
-            lines.push_back(name);
-            lines.push_back("->");
-            lines.push_back(lineFromText.substr(index + 2, lineFromText.length() - index - 2));
-            continue;
-        }
-        index = lineFromText.find("<-");
-        if (index < lineFromText.length()) {
-            lines.push_back("var");
-            string name = lineFromText.substr(3, index - 3);
-            lines.push_back(name);
-            lines.push_back("<-");
-            lines.push_back(lineFromText.substr(index + 2, lineFromText.length() - index - 2));
-            continue;
-        }
-        index = lineFromText.find("var");
-        if (index < lineFromText.length()) {
-            lines.push_back("var");
-            int index2 = lineFromText.find("=");
-            string name = lineFromText.substr(index+3, index2-3);
-            lines.push_back(name);
-            lines.push_back("=");
-            string exp2 = lineFromText.substr(index2+1, lineFromText.length() - index2 - 1);
-            lines.push_back(exp2);
-            continue;
-        }
-        index = lineFromText.find("while");
-        if (index < lineFromText.length()) {
-            lines.push_back("while");
-            checkCondition(&lines, lineFromText.substr(5, lineFromText.length() - 5));
-            continue;
-        }
-        index = lineFromText.find("if");
-        if (index < lineFromText.length()) {
-            lines.push_back("if");
-            checkCondition(&lines, lineFromText.substr(2, lineFromText.length() - 2));
-            continue;
-        }
-        if (lineFromText == "}") {
-            lines.push_back("}");
-        }
-        if (lineFromText == "{") {
-            lines.push_back("{");
-        }
-        index = lineFromText.find("=");
-        if (index < lineFromText.length()) {
-            assign(&lines, lineFromText);
-            continue;
-        }
+    index = lineFromText.find("connectControlClient");
+    if (index < lineFromText.length()) {
+      lines.push_back("connectControlClient");
+      lines.push_back("(");
+      string substr = lineFromText.substr(21, lineFromText.length() - 21);
+      int index2 = substr.find(",");
+      string ip = substr.substr(0, index2);
+      string port = substr.substr(index2 + 1, substr.length() - index2 - 2);
+      lines.push_back(ip);
+      lines.push_back(port);
+      lines.push_back(")");
+      continue;
+    }
+    index = lineFromText.find("Sleep");
+    if (index < lineFromText.length()) {
+      lines.push_back("Sleep");
+      lines.push_back("(");
+      string substr = lineFromText.substr(6, lineFromText.length() - 7);
+      lines.push_back(substr);
+      lines.push_back(")");
+      continue;
+    }
+    index = lineFromText.find("Print");
+    if (index < lineFromText.length()) {
+      lines.push_back("Print");
+      lines.push_back("(");
+      string substr = lineFromText.substr(6, lineFromText.length() - 7);
+      lines.push_back(substr);
+      lines.push_back(")");
+      continue;
+    }
+    index = lineFromText.find("->");
+    if (index < lineFromText.length()) {
+      lines.push_back("var");
+      string name = lineFromText.substr(3, index - 3);
+      lines.push_back(name);
+      lines.push_back("->");
+      lines.push_back(lineFromText.substr(index + 2, lineFromText.length() - index - 2));
+      continue;
+    }
+    index = lineFromText.find("<-");
+    if (index < lineFromText.length()) {
+      lines.push_back("var");
+      string name = lineFromText.substr(3, index - 3);
+      lines.push_back(name);
+      lines.push_back("<-");
+      lines.push_back(lineFromText.substr(index + 2, lineFromText.length() - index - 2));
+      continue;
+    }
+    index = lineFromText.find("var");
+    if (index < lineFromText.length()) {
+      lines.push_back("var");
+      int index2 = lineFromText.find("=");
+      string name = lineFromText.substr(index+3, index2-3);
+      lines.push_back(name);
+      lines.push_back("=");
+      string exp2 = lineFromText.substr(index2+1, lineFromText.length() - index2 - 1);
+      lines.push_back(exp2);
+      continue;
+    }
+    index = lineFromText.find("while");
+    if (index < lineFromText.length()) {
+      lines.push_back("while");
+      checkCondition(&lines, lineFromText.substr(5, lineFromText.length() - 5));
+      continue;
+    }
+    index = lineFromText.find("if");
+    if (index < lineFromText.length()) {
+      lines.push_back("if");
+      checkCondition(&lines, lineFromText.substr(2, lineFromText.length() - 2));
+      continue;
+    }
+    if (lineFromText == "}") {
+      lines.push_back("}");
+    }
+    if (lineFromText == "{") {
+      lines.push_back("{");
+    }
+    index = lineFromText.find("=");
+    if (index < lineFromText.length()) {
+      assign(&lines, lineFromText);
+      continue;
+    }
 
-    }
-    for (auto i = lines.begin(); i != lines.end(); ++i)
-        std::cout << *i + ','<< ' ';
-    return lines;
+  }
+  for (auto i = lines.begin(); i != lines.end(); ++i)
+    std::cout << *i + ','<< ' ';
+  return lines;
 }
 
 string Lexer:: remove(string s) {
-    string noSpaces = "";
-    for (int i = 0; i < s.length(); i++) {
-        if ( s[i] == '"') {
-            noSpaces += s[i];
-            i++;
-            while (s[i] != '"') {
-                noSpaces += s[i];
-                i++;
-            }
-        }
-        if (s[i] != ' ' && s[i] != '\t') {
-            noSpaces += s[i];
-        }
+  string noSpaces = "";
+  for (int i = 0; i < s.length(); i++) {
+    if ( s[i] == '"') {
+      noSpaces += s[i];
+      i++;
+      while (s[i] != '"') {
+        noSpaces += s[i];
+        i++;
+      }
     }
-    return noSpaces;
+    if (s[i] != ' ' && s[i] != '\t') {
+      noSpaces += s[i];
+    }
+  }
+  return noSpaces;
 }
 
 void Lexer:: checkCondition(vector<string> *lines, string condition) {
-    string exp1, exp2;
-    int index = condition.find("<=");
-    if(index < condition.length()) {
-        exp1 = condition.substr(0, index);
-        lines->push_back(exp1);
-        lines->push_back("<=");
-        exp2 = condition.substr(index + 2, condition.length() - index - 3);
-        lines->push_back(exp2);
-        lines->push_back("{");
-        return;
-    }
-    index = condition.find(">=");
-    if(index < condition.length()) {
-        exp1 = condition.substr(0, index);
-        lines->push_back(exp1);
-        lines->push_back(">=");
-        exp2 = condition.substr(index + 2, condition.length() - index - 3);
-        lines->push_back(exp2);
-        lines->push_back("{");
-        return;
-    }
-    index = condition.find("==");
-    if(index < condition.length()) {
-        exp1 = condition.substr(0, index);
-        lines->push_back(exp1);
-        lines->push_back("==");
-        exp2 = condition.substr(index + 2, condition.length() - index - 3);
-        lines->push_back(exp2);
-        lines->push_back("{");
-        return;
-    }
-    index = condition.find(">");
-    if(index < condition.length()) {
-        exp1 = condition.substr(0, index);
-        lines->push_back(exp1);
-        lines->push_back(">");
-        exp2 = condition.substr(index + 1, condition.length() - index - 2);
-        lines->push_back(exp2);
-        lines->push_back("{");
-        return;
-    }
-    index = condition.find("<");
-    if(index < condition.length()) {
-        exp1 = condition.substr(0, index);
-        lines->push_back(exp1);
-        lines->push_back("<");
-        exp2 = condition.substr(index + 1, condition.length() - index - 2); // maybe 1
-        lines->push_back(exp2);
-        lines->push_back("{");
-        return;
-    }
-    index = condition.find("!=");
-    if(index < condition.length()) {
-        exp1 = condition.substr(0, index);
-        lines->push_back(exp1);
-        lines->push_back("!=");
-        exp2 = condition.substr(index + 2, condition.length() - index - 3);
-        lines->push_back(exp2);
-        lines->push_back("{");
-        return;
-    }
-    exp1 = condition.substr(0, condition.length() - 2);
+  string exp1, exp2;
+  int index = condition.find("<=");
+  if(index < condition.length()) {
+    exp1 = condition.substr(0, index);
     lines->push_back(exp1);
+    lines->push_back("<=");
+    exp2 = condition.substr(index + 2, condition.length() - index - 3);
+    lines->push_back(exp2);
     lines->push_back("{");
+    return;
+  }
+  index = condition.find(">=");
+  if(index < condition.length()) {
+    exp1 = condition.substr(0, index);
+    lines->push_back(exp1);
+    lines->push_back(">=");
+    exp2 = condition.substr(index + 2, condition.length() - index - 3);
+    lines->push_back(exp2);
+    lines->push_back("{");
+    return;
+  }
+  index = condition.find("==");
+  if(index < condition.length()) {
+    exp1 = condition.substr(0, index);
+    lines->push_back(exp1);
+    lines->push_back("==");
+    exp2 = condition.substr(index + 2, condition.length() - index - 3);
+    lines->push_back(exp2);
+    lines->push_back("{");
+    return;
+  }
+  index = condition.find(">");
+  if(index < condition.length()) {
+    exp1 = condition.substr(0, index);
+    lines->push_back(exp1);
+    lines->push_back(">");
+    exp2 = condition.substr(index + 1, condition.length() - index - 2);
+    lines->push_back(exp2);
+    lines->push_back("{");
+    return;
+  }
+  index = condition.find("<");
+  if(index < condition.length()) {
+    exp1 = condition.substr(0, index);
+    lines->push_back(exp1);
+    lines->push_back("<");
+    exp2 = condition.substr(index + 1, condition.length() - index - 2); // maybe 1
+    lines->push_back(exp2);
+    lines->push_back("{");
+    return;
+  }
+  index = condition.find("!=");
+  if(index < condition.length()) {
+    exp1 = condition.substr(0, index);
+    lines->push_back(exp1);
+    lines->push_back("!=");
+    exp2 = condition.substr(index + 2, condition.length() - index - 3);
+    lines->push_back(exp2);
+    lines->push_back("{");
+    return;
+  }
+  exp1 = condition.substr(0, condition.length() - 2);
+  lines->push_back(exp1);
+  lines->push_back("{");
 
 }
 
 void Lexer:: assign(vector<string> *lines, string condition) {
-    string name, exp2;
-    int index = condition.find("+=");
-    if(index < condition.length()) {
-        name = condition.substr(0, index);
-        lines->push_back(name);
-        lines->push_back("=");
-        exp2 = condition.substr(index + 1, condition.length() - index - 3);
-        lines->push_back(name+"+"+exp2);
-        return;
-    }
-    index = condition.find("-=");
-    if(index < condition.length()) {
-        name = condition.substr(0, index);
-        lines->push_back(name);
-        lines->push_back("=");
-        exp2 = condition.substr(index +1, condition.length() - index - 3);
-        lines->push_back(name+"-"+exp2);
-        return;
-    }
-    index = condition.find("/=");
-    if(index < condition.length()) {
-        name = condition.substr(0, index);
-        lines->push_back(name);
-        lines->push_back("=");
-        exp2 = condition.substr(index + 1, condition.length() - index - 3);
-        lines->push_back(name+"/"+exp2);
-        return;
-    }
-    index = condition.find("*=");
-    if(index < condition.length()) {
-        name = condition.substr(0, index);
-        lines->push_back(name);
-        lines->push_back("=");
-        exp2 = condition.substr(index + 1, condition.length() - index - 3);
-        lines->push_back(name+"*"+exp2);
-        return;
-    }
-    index = condition.find("=");
-    if(index < condition.length()) {
-        name = condition.substr(0, index);
-        lines->push_back(name);
-        lines->push_back("=");
-        exp2 = condition.substr(index + 1, condition.length() - index - 1);
-        lines->push_back(exp2);
-        return;
-    }
+  string name, exp2;
+  int index = condition.find("+=");
+  if(index < condition.length()) {
+    name = condition.substr(0, index);
+    lines->push_back(name);
+    lines->push_back("=");
+    exp2 = condition.substr(index + 1, condition.length() - index - 3);
+    lines->push_back(name+"+"+exp2);
+    return;
+  }
+  index = condition.find("-=");
+  if(index < condition.length()) {
+    name = condition.substr(0, index);
+    lines->push_back(name);
+    lines->push_back("=");
+    exp2 = condition.substr(index +1, condition.length() - index - 3);
+    lines->push_back(name+"-"+exp2);
+    return;
+  }
+  index = condition.find("/=");
+  if(index < condition.length()) {
+    name = condition.substr(0, index);
+    lines->push_back(name);
+    lines->push_back("=");
+    exp2 = condition.substr(index + 1, condition.length() - index - 3);
+    lines->push_back(name+"/"+exp2);
+    return;
+  }
+  index = condition.find("*=");
+  if(index < condition.length()) {
+    name = condition.substr(0, index);
+    lines->push_back(name);
+    lines->push_back("=");
+    exp2 = condition.substr(index + 1, condition.length() - index - 3);
+    lines->push_back(name+"*"+exp2);
+    return;
+  }
+  index = condition.find("=");
+  if(index < condition.length()) {
+    name = condition.substr(0, index);
+    lines->push_back(name);
+    lines->push_back("=");
+    exp2 = condition.substr(index + 1, condition.length() - index - 1);
+    lines->push_back(exp2);
+    return;
+  }
 }
 
 ////////////////////////////////////////////////
@@ -481,6 +481,3 @@ void Lexer:: assign(vector<string> *lines, string condition) {
 //    return vstrings;
 //
 //}
-
-
-
