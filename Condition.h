@@ -10,7 +10,6 @@
 #include "SymbolTable.h"
 #include "Lexer.h"
 #include "ex1.h"
-#include "VariableManager.h"
 #include <iostream>
 #include <string>
 #include "PrintCommand.h"

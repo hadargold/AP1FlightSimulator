@@ -16,47 +16,8 @@
 
 class SymbolTable {
 private:
-    //Variable * t = new Variable();
     unordered_map<string, Variable *> map;
 
-//        map <string, Variable*> mapa = {
-//            {"airspeed-indicator_indicated-speed-kt" , new Variable()},
-//            {"time_warp" , new Variable()},
-//            {"switches_magnetos" , new Variable()},
-//            {"heading-indicator_offset-deg" , new Variable()},
-//            {"altimeter_indicated-altitude-ft" , new Variable()},
-//            {"altimeter_pressure-alt-ft" , new Variable()},
-//            {"attitude-indicator_indicated-pitch-deg" , new Variable()},
-//            {"attitude-indicator_indicated-roll-deg" , new Variable()},
-//            {"attitude-indicator_internal-pitch-deg" , new Variable()},
-//            {"attitude-indicator_internal-roll-deg" , new Variable()},
-//            {"encoder_indicated-altitude-ft" , new Variable()},
-//            {"encoder_pressure-alt-ft" , new Variable()},
-//            {"gps_indicated-altitude-ft" , new Variable()},
-//            {"gps_indicated-ground-speed-kt" , new Variable()},
-//            {"gps_indicated-vertical-speed" , new Variable()},
-//            {"indicated-heading-deg" , new Variable()},
-//            {"magnetic-compass_indicated-heading-deg" , new Variable()},
-//            {"slip-skid-ball_indicated-slip-skid" , new Variable()},
-//            {"turn-indicator_indicated-turn-rate" , new Variable()},
-//            {"vertical-speed-indicator_indicated-speed-fpm" , new Variable()},
-//            {"flight_aileron" , new Variable()},
-//            {"flight_elevator" , new Variable()},
-//            {"flight_rudder" , new Variable()},
-//            {"flight_flaps" , new Variable()},
-//            {"engine_throttle" , new Variable()},
-//            {"current-engine_throttle" , new Variable()},
-//            {"switches_master-avionics" , new Variable()},
-//            {"switches_starter" , new Variable()},
-//            {"active-engine_auto-start" , new Variable()},
-//            {"flight_speedbrake" , new Variable()},
-//            {"c172p_brake-parking" , new Variable()},
-//            {"engine_primer" , new Variable()},
-//            {"current-engine_mixture" , new Variable()},
-//            {"switches_master-bat" , new Variable()},
-//            {"switches_master-alt" , new Variable()},
-//            {"engine_rpm" , new Variable()}
-//    };
     unordered_map<string, string> symbolMap = { // sim name to to sim val- in var
             {"airspeed-indicator_indicated-speed-kt",        "/instrumentation/airspeed-indicator/indicated-speed-kt"},
             {"time_warp",                                    "/sim/time/warp"},
@@ -99,40 +60,40 @@ private:
     unordered_map <string, string> simToVal = { // sim path to client name
             {"/instrumentation/airspeed-indicator/indicated-speed-kt", "airspeed"},
             {"/sim/time/warp","warp"},
-            {"controls/switches/magnetos","magnetos"},
-            {"instrumentation/heading-indicator/offset-deg",""},
-            {"instrumentation/altimeter/indicated-altitude-ft","alt"}, //
-            {"instrumentation/altimeter/pressure-alt-ft",""},
-            {"instrumentation/attitude-indicator/indicated-pitch-deg",""},
-            {"instrumentation/attitude-indicator/indicated-roll-deg",""},
-            {"instrumentation/attitude-indicator/internal-pitch-deg",""},
-            {"instrumentation/attitude-indicator/internal-roll-deg",""},
-            {"instrumentation/encoder/indicated-altitude-ft",""},
-            {"instrumentation/encoder/pressure-alt-ft",""},
-            {"instrumentation/gps/indicated-altitude-ft",""},
-            {"instrumentation/gps/indicated-ground-speed-kt",""},
-            {"instrumentation/gps/indicated-vertical-speed",""},
-            {"instrumentation/heading-indicator/indicated-heading-deg",""},
-            {"instrumentation/magnetic-compass/indicated-heading-deg",""},
-            {"instrumentation/slip-skid-ball/indicated-slip-skid",""},
-            {"instrumentation/turn-indicator/indicated-turn-rate",""},
-            {"instrumentation/vertical-speed-indicator/indicated-speed-fpm",""},
-            {"controls/flight/aileron","aileron"}, //
-            {"controls/flight/elevator","elevator"}, //
-            {"controls/flight/rudder",""},
-            {"controls/flight/flaps",""},
-            {"controls/engines/engine/throttle",""},
-            {"controls/engines/current-engine/throttle","throttle"}, //
-            {"controls/switches/master-avionics",""},
-            {"controls/switches/starter",""},
-            {"engines/active-engine/auto-start",""},
-            {"controls/flight/speedbrake",""},
-            {"sim/model/c172p/brake-parking",""},
-            {"controls/engines/engine/primer",""},
-            {"controls/engines/current-engine/mixture",""},
-            {"controls/switches/master-bat",""},
-            {"controls/switches/master-alt",""},
-            {"engines/engine/rpm","rpm"} //
+            {"/controls/switches/magnetos","magnetos"},
+            {"/instrumentation/heading-indicator/offset-deg",""},
+            {"/instrumentation/altimeter/indicated-altitude-ft","alt"}, //
+            {"/instrumentation/altimeter/pressure-alt-ft",""},
+            {"/instrumentation/attitude-indicator/indicated-pitch-deg",""},
+            {"/instrumentation/attitude-indicator/indicated-roll-deg",""},
+            {"/instrumentation/attitude-indicator/internal-pitch-deg",""},
+            {"/instrumentation/attitude-indicator/internal-roll-deg",""},
+            {"/instrumentation/encoder/indicated-altitude-ft",""},
+            {"/instrumentation/encoder/pressure-alt-ft",""},
+            {"/instrumentation/gps/indicated-altitude-ft",""},
+            {"/instrumentation/gps/indicated-ground-speed-kt",""},
+            {"/instrumentation/gps/indicated-vertical-speed",""},
+            {"/instrumentation/heading-indicator/indicated-heading-deg",""},
+            {"/instrumentation/magnetic-compass/indicated-heading-deg",""},
+            {"/instrumentation/slip-skid-ball/indicated-slip-skid",""},
+            {"/instrumentation/turn-indicator/indicated-turn-rate",""},
+            {"/instrumentation/vertical-speed-indicator/indicated-speed-fpm",""},
+            {"/controls/flight/aileron","aileron"}, //
+            {"/controls/flight/elevator","elevator"}, //
+            {"/controls/flight/rudder",""},
+            {"/controls/flight/flaps",""},
+            {"/controls/engines/engine/throttle",""},
+            {"/controls/engines/current-engine/throttle","throttle"}, //
+            {"/controls/switches/master-avionics",""},
+            {"/controls/switches/starter",""},
+            {"/engines/active-engine/auto-start",""},
+            {"/controls/flight/speedbrake",""},
+            {"/sim/model/c172p/brake-parking",""},
+            {"/controls/engines/engine/primer",""},
+            {"/controls/engines/current-engine/mixture",""},
+            {"/controls/switches/master-bat",""},
+            {"/controls/switches/master-alt",""},
+            {"/engines/engine/rpm","rpm"} //
 
     };
 
@@ -265,7 +226,6 @@ public:
     void addValuesFromSimToSymbolTable(vector<string> splitValues) {
         //std::string::size_type sz;     // alias of size_t
         for (int i = 0; i < splitValues.size(); i++) {
-
             // if the direction is left - update the map
             unordered_map<string,Variable*>::iterator it = this->map.find(simToVal[simArr[i]]);
             if (it != this->map.end()) {
@@ -276,6 +236,5 @@ public:
         }
     }
 };
-
 
 #endif //FLIGHTSIMULATOR_SYMBOLTABLE_H

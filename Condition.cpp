@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 #include "PrintCommand.h"
-#include "VariableManager.h"
 #include "Interpreter.h"
 #include "SymbolTable.h"
 

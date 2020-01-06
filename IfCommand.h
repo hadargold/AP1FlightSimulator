@@ -26,6 +26,7 @@ public:
 //    }
     void doCommand(vector<string> &text);
     void execute(int *index);
+    bool getResult(vector<string> conditionVec);
 
 };
 

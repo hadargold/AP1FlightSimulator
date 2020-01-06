@@ -28,6 +28,9 @@ public:
         return direction;
     }
     void setValue(int val) {
+        if ("/engines/engine/rpm" == this->nameAccordingToSim) {
+            cout << "hbkjhj" << endl;
+        }
         this->value = val;
     }
     Variable& operator++();

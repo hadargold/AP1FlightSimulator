@@ -92,7 +92,7 @@ void checkMinus (string var) {
 
 // interprets the string
 Expression *Interpreter::interpret(string str) {
-    checkMinus(str);
+    //checkMinus(str);
     if (!this->variables.empty()) {
         str = replaceVar(str, &this->variables);
     }

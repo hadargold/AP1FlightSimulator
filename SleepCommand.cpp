@@ -1,13 +1,15 @@
+//
+// Created by hadar on 12/22/19.
+//
 #include <string>
 #include <chrono>
 #include <thread>
 #include "SleepCommand.h"
 #include "Interpreter.h"
-#include "VariableManager.h"
 #include "ConnectCommand.h"
 #include "SymbolTable.h"
 
-
+// construcotr
 SleepCommand :: SleepCommand(string strTime, SymbolTable* symbolTable1) {
     // change the timeToSleep to int
     this->symbolTable = symbolTable1;
@@ -18,6 +20,7 @@ SleepCommand :: SleepCommand(string strTime, SymbolTable* symbolTable1) {
     this->timeToSleep = intTime;
 }
 
+// execute the sleep
 void SleepCommand::execute(int* index)
 {
     //from chrono

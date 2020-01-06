@@ -48,7 +48,7 @@ Command* CommandsManager::commandsFactory(vector <string> lexer ,int i) {
     }else if (lexer[i].compare("while") == 0) {
         return new WhileCommand(lexer, i, this->symbolTable, this);
     }else if (lexer[i].compare("var") == 0) {
-        return new VarCommand(lexer[i+1], lexer[i+2],lexer[i+5], this->symbolTable);
+        return new VarCommand(lexer[i+1], lexer[i+2],lexer[i+3], this->symbolTable);
     }else if (lexer[i].compare("openDataServer") == 0) {
         return new OpenServerCommand(lexer[i+2], this->symbolTable);
     }else if (lexer[i].compare("connectControlClient") == 0) {

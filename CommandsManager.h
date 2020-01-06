@@ -1,3 +1,7 @@
+//
+// Created by yuval on 12/19/19.
+//
+
 #ifndef EX3_MANAGER_H
 #define EX3_MANAGER_H
 
@@ -16,7 +20,6 @@ private:
     vector <string > namesOfCommands;
     map <string , Command*> stringToCommand;
     SymbolTable *symbolTable;
-    //map <string , int> commandToNumOfParameters; // was in private
 public:
     CommandsManager() {
         namesOfCommands = {"while", "if", "var","openDataServer","connectControlClient", "Sleep", "Print"};
@@ -24,8 +27,6 @@ public:
     }
     explicit CommandsManager(const map<string, Command *> &stringToCommand);
     Command* commandsFactory(vector <string> lexer ,int i);
-    //void createCommandsAndNumOfParameters();
-    //int getNumOfParametersByString(const string &stringRepresentACommand);
     bool isCommand(const string &stringRepresentACommand);
     Command* getCommandByString(const string &stringRepresentACommand);
     SymbolTable* getSymbolTable();

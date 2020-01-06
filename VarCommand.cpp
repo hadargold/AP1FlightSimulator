@@ -11,7 +11,6 @@
 #include <thread>
 #include "SleepCommand.h"
 #include "Interpreter.h"
-#include "VariableManager.h"
 #include "ConnectCommand.h"
 #include "Command.h"
 
@@ -19,10 +18,11 @@
 
 using namespace std;
 
+// constructor
 VarCommand :: VarCommand(string nameAccordingToClient, string direction, string nameAccordingToSim,
         SymbolTable* symbolTable) {
+    nameAccordingToSim = nameAccordingToSim.substr(5, nameAccordingToSim.length() - 7);
     enum  directions {RIGHT, LEFT, EQUAL};
-    //nameAccordingToSim = nameAccordingToSim.substr(1, nameAccordingToSim.length()-2);
     this->nameAccordingToClient = nameAccordingToClient;
     this->nameAccordingToSim = nameAccordingToSim;
     if (direction.compare("->") == 0) {
@@ -35,11 +35,12 @@ VarCommand :: VarCommand(string nameAccordingToClient, string direction, string 
     this->symbolTable = symbolTable;
 }
 
+// creates the variable and insert them to the symbol table
 void VarCommand:: execute(int* index) {
     // create the Variable
     const double defaultVal = 0;
     unordered_map<string,Variable*> &nameOfVarToVariableMap = this->symbolTable->getMap();
     Variable *newVar = new Variable(nameAccordingToSim, defaultVal, direction);
     nameOfVarToVariableMap.insert(pair<string,Variable*>(nameAccordingToClient,newVar));
-    *index += 6;
+    *index += 3;
 }
