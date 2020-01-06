@@ -17,8 +17,9 @@ void updateValuesInSymbolTable(string stringOfValuesFromSim);
 vector <string> splitByComma(string stringOfValuesFromSim);
 
 // constructor
-OpenServerCommand :: OpenServerCommand(string strPort, SymbolTable* symbolTable) {
+OpenServerCommand :: OpenServerCommand(string strPort, SymbolTable* symbolTable,pthread_mutex_t* mutex) {
     // change the port to int
+    this->mutex = mutex;
     auto *stringToInterpretForPort= new Interpreter();
     stringToInterpretForPort->setVariablesByMapOfVars(symbolTable->getMap());
     Expression *expressionToPrint = stringToInterpretForPort->interpret(strPort);
@@ -32,6 +33,7 @@ struct parameters {
     SymbolTable* symbolTableToConnect;
     int clientSocket;
     int portToconnect;
+    pthread_mutex_t *mutex;
 };
 
 // execute to opening of the server
@@ -84,6 +86,7 @@ void OpenServerCommand:: execute(int* index) {
     parametersToOpenDataServer->portToconnect = this->port;
     parametersToOpenDataServer->clientSocket = client_socket;
     parametersToOpenDataServer->symbolTableToConnect = this->symbolTable;
+    parametersToOpenDataServer->mutex = this->mutex;
     pthread_t thread;
     pthread_create(&thread, nullptr, OpenServerCommand::openDataServer, parametersToOpenDataServer);
     *index += 3;
@@ -105,10 +108,9 @@ void* OpenServerCommand::openDataServer(void* arguments) {
                 if (c == '\n') {
                     if (stringOfValuesFromSim.length() > 0) {
                         vector<string> splitValues = splitByComma(stringOfValuesFromSim);
-                        mutex mutex;
-                        mutex.try_lock();
+                        pthread_mutex_lock(parametersToOpenDataServer->mutex);
                         parametersToOpenDataServer->symbolTableToConnect->addValuesFromSimToSymbolTable(splitValues);
-                        mutex.unlock();
+                        pthread_mutex_unlock(parametersToOpenDataServer->mutex);
                         cout << stringOfValuesFromSim << endl;
                         stringOfValuesFromSim = "";
                     }

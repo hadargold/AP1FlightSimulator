@@ -16,14 +16,13 @@ void UpdateValCommand :: execute(int* index) {
     // update the value in the symbol table
     unordered_map<string,Variable*>::iterator it = nameOfVarToVariableMap.find(this->varName);
     if (it != nameOfVarToVariableMap.end()) {
-        mutex mutex;
-        mutex.try_lock();
+        pthread_mutex_lock(this->mutex);
         it->second->setValue(valueToUpdate->calculate());
         if (it->second->getDirection() == 0) {
             // add the value and the name to a queue in order to sent it to the simulator if the direction is right
-            valuesToSendToTheSim.push(make_pair(this->varName, valueToUpdate->calculate()));
+            (*(this->valuesToSendToTheSim)).push(make_pair(this->varName, valueToUpdate->calculate()));
         }
-        mutex.unlock();
+        pthread_mutex_unlock(this->mutex);
     }
     *index += 2;
 }

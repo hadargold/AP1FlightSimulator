@@ -17,10 +17,11 @@ private:
     SymbolTable* symbolTable;
      string ip;
      int port;
-     std::queue<std::pair<std::string, double>> valuesToSendToTheSim ;
+     std::queue<std::pair<std::string, double>> * valuesToSendToTheSim ;
+    pthread_mutex_t *mutex;
 public:
     ConnectCommand(string ip, std::string  port, SymbolTable* symbolTable1,
-        std::queue<std::pair<std::string, double>> valuesToSendToTheSim);
+        std::queue<std::pair<std::string, double>> * valuesToSendToTheSim, pthread_mutex_t* mutex);
     void execute(int* index) override;
     static void* createConnect(void* parameters);
 };

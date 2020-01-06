@@ -22,7 +22,8 @@ string getNameOfVarBySimulator(string nameAccordingToClientAndValue, SymbolTable
 
 // constructor for connect command
 ConnectCommand :: ConnectCommand(string ip, string  port, SymbolTable* symbolTable1,
-    std::queue<std::pair<std::string, double>> valuesToSendToTheSim) {
+    std::queue<std::pair<std::string, double>>* valuesToSendToTheSim, pthread_mutex_t* mutex) {
+    this -> mutex = mutex;
     this->valuesToSendToTheSim = valuesToSendToTheSim;
     ip = ip.substr(1, ip.length()-2);
     this->ip = ip;
@@ -40,7 +41,8 @@ ConnectCommand :: ConnectCommand(string ip, string  port, SymbolTable* symbolTab
 struct parameters {
     int clientSocket;
     SymbolTable* symbolTableForConnection;
-    std::queue<std::pair<std::string, double>> valuesToSend ;
+    std::queue<std::pair<std::string, double>>* valuesToSend ;
+    pthread_mutex_t *mutex;
 };
 
 // execute the connection
@@ -73,6 +75,7 @@ void ConnectCommand:: execute(int* index) {
     parametersToConnect->clientSocket = client_socket;
     parametersToConnect->symbolTableForConnection = this->symbolTable;
     parametersToConnect->valuesToSend = this->valuesToSendToTheSim;
+    parametersToConnect->mutex = this->mutex;
     pthread_t thread;
     pthread_create(&thread, nullptr, ConnectCommand::createConnect , parametersToConnect);
     *index += 4;
@@ -87,11 +90,10 @@ void* ConnectCommand::createConnect(void* arguments) {
     //std::queue<std::pair<std::string, double>> valuesToSend = updateValCommand->getValuesToSend();
     while (true) {
         // values to send is queue of values so send to the simulator
-        if (!parametersToConnect->valuesToSend.empty()) {
-          mutex mutex;
-          mutex.try_lock();
-          std::pair<std::string, double> nameAccordingToClientAndValue = parametersToConnect->valuesToSend.front();
-          parametersToConnect->valuesToSend.pop();
+        if (!parametersToConnect->valuesToSend->empty()) {
+            pthread_mutex_lock(parametersToConnect->mutex);
+          std::pair<std::string, double> nameAccordingToClientAndValue = parametersToConnect->valuesToSend->front();
+          parametersToConnect->valuesToSend->pop();
           string nameOfVarBySimulator = getNameOfVarBySimulator(nameAccordingToClientAndValue.first,
                                                                   parametersToConnect->symbolTableForConnection);
             // remove the sim" from beginning and " from end
@@ -100,7 +102,7 @@ void* ConnectCommand::createConnect(void* arguments) {
                     "set " + nameOfVarBySimulator + " " + to_string(nameAccordingToClientAndValue.second) + "\r\n";
             cout << message << endl;
             write(parametersToConnect->clientSocket, message.c_str(), message.length());
-            mutex.unlock();
+            pthread_mutex_unlock(parametersToConnect->mutex);
         }
     }
 }

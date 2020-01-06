@@ -16,7 +16,7 @@ void Parser :: parse(CommandsManager* commandsManager, vector <string> lexer) {
             // if the command is "=" so the i is on the var name and the next index is the "="
         else if (lexer[i+1] == "=") {
             Command *c = new UpdateValCommand(lexer[i], lexer[i+2], commandsManager->getSymbolTable(),
-                commandsManager->getValToSend());
+                commandsManager->getValToSend(), commandsManager->getMutex());
             c->execute(&i);
         }
     }

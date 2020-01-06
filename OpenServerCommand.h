@@ -14,8 +14,9 @@ class OpenServerCommand: public Command{
 private:
     SymbolTable* symbolTable;
     int port;
+    pthread_mutex_t *mutex;
 public:
-    OpenServerCommand(string strPort, SymbolTable* symbolTable);
+    OpenServerCommand(string strPort, SymbolTable* symbolTable, pthread_mutex_t* mutex);
     void execute(int* index);
     static void* openDataServer(void* parameters);
 };

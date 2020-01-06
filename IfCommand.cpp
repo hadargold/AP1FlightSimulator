@@ -45,7 +45,7 @@ void IfCommand::execute(int *index) { // should get the lex
                 // if the command is "=" so the i is on the var name and the next index is the "="
             else if (commandsVec[i+1] == "=") {
                 Command *c = new UpdateValCommand(commandsVec[i], commandsVec[i+2], commandsManager->getSymbolTable(),
-                    commandsManager->getValToSend());
+                    commandsManager->getValToSend(), commandsManager->getMutex());
                 c->execute(&i);
             }
         }
