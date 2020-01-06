@@ -85,7 +85,7 @@ void ConnectCommand:: execute(int* index) {
 // creates the connection to the simulator and sends values to it
 void* ConnectCommand::createConnect(void* arguments) {
     struct parameters *parametersToConnect = (struct parameters *) arguments;
-
+//
     //auto *updateValCommand = new UpdateValCommand();
     //std::queue<std::pair<std::string, double>> valuesToSend = updateValCommand->getValuesToSend();
     while (true) {
