@@ -14,7 +14,7 @@ public:
     Run(string textFile)
     {
         Lexer myLexer;
-        lexerVectorString = myLexer.lexerToTextFile("fly.txt");
+        lexerVectorString = myLexer.lexerToTextFile(textFile);
         commandsManager = new CommandsManager();
         parser = new Parser();
     }
