@@ -114,8 +114,8 @@ vector<string> Lexer::lexerToTextFile(string fileName) {
     }
 
   }
-  for (auto i = lines.begin(); i != lines.end(); ++i)
-    std::cout << *i + ','<< ' ';
+  //for (auto i = lines.begin(); i != lines.end(); ++i)
+    //std::cout << *i + ','<< ' ';
   return lines;
 }
 
